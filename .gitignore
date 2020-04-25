@@ -3,6 +3,9 @@
 
 
 venv/
+bin/
+include/
+lib/
 
 __pycache__/
 
