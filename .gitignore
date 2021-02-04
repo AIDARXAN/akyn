@@ -1,0 +1,14 @@
+*.pyc
+*~
+/.idea
+/.vscode
+__pycache__
+
+myvenv
+/env
+.env
+
+.DS_Store
+
+
+bot.pid
