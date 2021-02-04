@@ -56,12 +56,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_auth.registration',
-    'django_crontab',
 
     # apps
-    'users_api',
+    'feed_api',
     'notification_api',
-    'feed_api'
+    'users_api',
 ]
 
 MIDDLEWARE = [
@@ -176,8 +175,13 @@ AUTH_USER_MODEL = 'users_api.User'
 
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'users_api.serializers.CustomLoginSerializer',
+    'REGISTER_SERIALIZER': 'users_api.serializers.RegisterSerializer',
 }
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_ADAPTER = 'users_api.adapters.CustomUserAccountAdapter'
