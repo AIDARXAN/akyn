@@ -44,6 +44,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    # 3-rd party libraries
+    'drf_yasg',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth.registration',
+    'django_crontab',
+
+    # apps
+    'users_api',
+    'notification_api',
+    'feed_api'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +94,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
-
+SITE_ID=1
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -101,7 +119,7 @@ DATABASES = {
     }
 }
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
