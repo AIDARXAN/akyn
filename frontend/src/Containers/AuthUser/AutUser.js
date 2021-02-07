@@ -54,7 +54,7 @@ const AutUser = (props) => {
                         );
                     })}
                 </Switch>}
-                <Footer fluid/>
+                {/*<Footer fluid/>*/}
             </div>
         </div>
     );

@@ -114,10 +114,6 @@ const Profile = () => {
                                         style={{color: "#00b0ba", fontWeight: "bold"}}>{userRolesRus[user.groups[0]?.name]}</b>
                                     </p>}
 
-                                    {user.additional_group && <p className="description">
-                                        <strong>Роль: </strong> <b
-                                        style={{color: "#00b0ba", fontWeight: "bold"}}>{userAdditionalRolesRus[user.additional_group.name]}</b>
-                                    </p>}
 
                                     <button
                                         className="edit-btn"
@@ -130,34 +126,14 @@ const Profile = () => {
                             </CardBody>
 
                             <CardFooter>
-                                {(user.birth_date || user.employment_date) && <hr/>}
+                                {user.birth_date  && <hr/>}
 
                                 {user.birth_date &&
                                 <p className="description text-center">
                                     <strong>День рождения: {moment(user.birth_date).format("DD.MM.YYYY")}</strong>
                                 </p>}
-                                {user.employment_date &&
-                                <p className="description text-center">
-                                    <strong>Дата приема на
-                                        работу: {moment(user.employment_date).format("DD.MM.YYYY")}</strong>
-                                </p>}
-
                                 <hr/>
-                                <p className="description text-center d-inline-block w-50 ">
-                                    <span className={`font-weight-bold text-${user.account_activation_date !== null ? "success" : "danger"}`}>
-                                        {user.account_activation_date !== null ? "Да" : "Нет"}
-                                    </span>
-                                    <br/>
-                                    Активирован
-                                </p>
-                                <p className="description text-center d-inline-block w-50 ">
-                                    <span
-                                        className={`font-weight-bold text-${user.status === ACTIVE ? "success" : "danger"}`}>
-                                        {user.status === ACTIVE ? "Да" : "Нет"}
-                                    </span>
-                                    <br/>
-                                    Активен
-                                </p>
+
                             </CardFooter>
                         </Card>
                     </Col>

@@ -30,15 +30,6 @@ class Footer extends React.Component {
                 className={"footer" + (this.props.default ? " footer-default" : "")}
             >
                 <Row style={{margin: "0"}}>
-                    <nav className="footer-nav">
-                        <ul>
-                            <li className={"ml5"}>
-                                <a href="https://it-attractor.com/" target="_blank">
-                                    ATTRACTOR
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                     <div className="credits ml-auto">
                         <div className="copyright">
                             &copy; {new Date().getFullYear()}

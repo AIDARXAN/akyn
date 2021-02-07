@@ -247,7 +247,7 @@ class Header extends React.Component {
                                                 </NavLink>
                                                 }
                                             </div>
-                                        )) : <p id="not-notification" className='p-2'>Уведомлений нет</p>}
+                                        )) : <p id="not-notification" className='p-2'>Билдирүү жок</p>}
 
                                     </div>
                                 </DropdownMenu>

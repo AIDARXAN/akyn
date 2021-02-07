@@ -71,76 +71,76 @@ const Registration = () => {
                     <FormElement
                         focus
                         valid={regex.email.test(user.email)}
-                        invalidText={"Адрес электронной почты должен быть введен на латинице, содержать символ @ и часть адреса после него"}
+                        invalidText={"Электрондук почтанын адреси латын менен жазылыш керек"}
                         name='email'
-                        placeholder='Email'
+                        placeholder='Электрондук почта'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.email}
-                        tooltip={"Email должен быть введен латинскими буквами и содержать символ \"@\""}
+                        tooltip={"Электрондук почтанын адреси латын менен жазылыш керек жана @ белгиси камтылыш керек"}
                     />
 
                     <FormElement
                         password
                         valid={user.password1.length >= 5}
-                        invalidText={"Пароль не может быть короче 5 символов"}
+                        invalidText={"Парол 5 белгиден аз болбош керек"}
                         name='password1'
-                        placeholder='Пароль'
+                        placeholder='Парол'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.password1}
-                        tooltip="Пароль должен содержать не меньше 5 символов"
+                        tooltip="Парол 5 белгиден аз болбош керек"
                     />
 
                     <FormElement
                         password
                         valid={user.password1 === user.password2 && user.password1.length >= 5}
-                        invalidText={"Пароль не соответствует введенному выше"}
+                        invalidText={"Парол өйдөңду жазылган паролго окшош эмес"}
                         name='password2'
-                        placeholder='Повторите пароль'
+                        placeholder='Паролду кайталаңыз'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.password2}
-                        tooltip="Повторите введенный пароль"
+                        tooltip="Паролду кайталаңыз"
                     />
 
                     <FormElement
                         valid={regex.phone.test(user.phone)}
-                        invalidText={"Телефон должен быть указан в формате +(996)ххх-хх-хх-хх"}
+                        invalidText={"Телефондун форматы ушуга окшош болушу зарыл +(996)ххх-хх-хх-хх"}
                         name='phone'
                         mask="+(\9\96)999-99-99-99"
                         placeholder='Телефон'
                         alignPlaceholder='center'
                         changeHandler={changePhone}
                         value={user.phone}
-                        tooltip="Телефонный номер должен содержать только цифры"
+                        tooltip="Телефондун номуру сан гана камтыш керек"
                     />
 
                     <FormElement
                         valid={user.first_name.length >= 3}
                         name='first_name'
-                        placeholder='Имя'
+                        placeholder='Ат'
                         alignPlaceholder='center'
                         changeHandler={onlyRussian}
                         value={user.first_name}
-                        tooltip="Введите имя, используя только кириллицу"
+                        tooltip="Кыргыз тилинде атыңызды жазып коюңуз"
                     />
 
                     <FormElement
                         valid={user.last_name.length >= 3}
                         name='last_name'
-                        placeholder='Фамилия'
+                        placeholder='Теги'
                         alignPlaceholder='center'
                         changeHandler={onlyRussian}
                         value={user.last_name}
-                        tooltip="Введите фамилию, используя только кириллицу"
+                        tooltip="Кыргыз тилинде тегиңизди жазып коюңуз"
                     />
 
                     {error &&
                     <>{
                         typeof error === "object" ?
                             <ErrorAlert error={error}/> :
-                            <Alert color="danger">Something error</Alert>
+                            <Alert color="danger">Серверден ката чыкты</Alert>
                     }</>
                     }
 
@@ -153,11 +153,11 @@ const Registration = () => {
                         style={{opacity: submitDisabled && "0.4"}}
                         className={`w-100 ${!submitDisabled ? "bg-info" : "bg-secondary"}`}
                     >
-                        Регистрация</Button>
+                        Каттоо</Button>
                 </form>
             </CardBody>
             <CardFooter className='border-top text-center p-3' style={{background: "#f6f6f6"}}>
-                <NavLink to='/login' style={{fontSize: "16px"}}>Назад</NavLink>
+                <NavLink to='/login' style={{fontSize: "16px"}}>Артка</NavLink>
             </CardFooter>
         </Card>
     );

@@ -51,7 +51,7 @@ const Login = () => {
                         value={user.password}
                     />
 
-                    {error && <Alert color="danger">Введен неверный логин или пароль</Alert>}
+                    {error && <Alert color="danger">Туура эмес логин же парол жаздыңыз.</Alert>}
 
                     <Button
                         id='loginSubmit'
@@ -61,14 +61,14 @@ const Login = () => {
                         style={{opacity: submitDisabled && "0.4"}}
                         className={`w-100 ${!submitDisabled ? "bg-info" : "bg-secondary"}`}
                     >
-                        Войти
+                        Кирүү
                     </Button>
                 </form>
             </CardBody>
             <CardFooter className='border-top text-center p-3' style={{background: "#f6f6f6"}}>
-                <NavLink id='toRegistration' to='/registration' style={{fontSize: "16px"}}>Регистрация</NavLink>
+                <NavLink id='toRegistration' to='/registration' style={{fontSize: "16px"}}>Каттоо</NavLink>
                 <br/>
-                <NavLink id='toReset' to='/reset' style={{fontSize: "16px"}}>Забыли пароль?</NavLink>
+                <NavLink id='toReset' to='/reset' style={{fontSize: "16px"}}>Парол унуттуңузбу?</NavLink>
             </CardFooter>
         </Card>
     );

@@ -61,12 +61,12 @@ const PasswordReset = () => {
                             style={{opacity: submitDisabled && "0.4"}}
                             className={`w-100 ${!submitDisabled ? "bg-info" : "bg-secondary"}`}
                         >
-                            Сбросить пароль
+                            Пароль жаңыртуу
                         </Button>
                     </form>
                 </CardBody>
                 <CardFooter className='border-top text-center p-3' style={{background: "#f6f6f6"}}>
-                    <NavLink to='/login' style={{fontSize: "16px"}}>Назад</NavLink>
+                    <NavLink to='/login' style={{fontSize: "16px"}}>Артка</NavLink>
                 </CardFooter>
             </Card>
         </>
