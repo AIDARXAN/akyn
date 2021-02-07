@@ -176,6 +176,7 @@ AUTH_USER_MODEL = 'users_api.User'
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'users_api.serializers.CustomLoginSerializer',
     'REGISTER_SERIALIZER': 'users_api.serializers.RegisterSerializer',
+    'TOKEN_SERIALIZER': 'users_api.serializers.TokenSerializer',
 }
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"

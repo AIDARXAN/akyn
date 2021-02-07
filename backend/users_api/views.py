@@ -6,8 +6,9 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_auth.registration.views import RegisterView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from users_api.serializers import RegisterSerializer
+from users_api.serializers import RegisterSerializer, UserSerializer
 
 
 class CustomRegisterView(RegisterView):
@@ -32,3 +33,12 @@ class CustomRegisterView(RegisterView):
         return Response(self.get_response_data(user),
                         status=status.HTTP_201_CREATED,
                         headers=headers)
+
+
+class ProfileView(APIView):
+    serializer = UserSerializer
+
+    def get(self, request):
+        serializer = self.serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)

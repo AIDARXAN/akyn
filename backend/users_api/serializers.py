@@ -1,8 +1,11 @@
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
+from rest_auth.models import TokenModel
 from rest_auth.registration.serializers import RegisterSerializer
-from rest_auth.serializers import LoginSerializer
+from rest_auth.serializers import LoginSerializer, TokenSerializer
 from rest_framework import serializers
+
+from users_api.models import User
 
 
 class CustomLoginSerializer(LoginSerializer):
@@ -39,3 +42,21 @@ class RegisterSerializer(RegisterSerializer):
 
     class Meta:
         ref_name = 'custom register serializer'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id', 'email', 'first_name',
+            'last_name', 'phone', 'is_active',
+            'avatar', 'birth_date', 'groups', 'is_superuser',
+        ]
+
+
+class TokenSerializer(TokenSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = TokenModel
+        fields = ['key', 'user']
