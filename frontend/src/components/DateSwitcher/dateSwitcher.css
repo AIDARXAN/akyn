@@ -1,0 +1,8 @@
+@media print {
+    #prevButton {
+        opacity: 0;
+    }
+    #nextButton {
+        opacity: 0;
+    }
+}

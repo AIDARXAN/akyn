@@ -1,0 +1,3 @@
+export const GET_LOGS_LIST_REQ = "GET_LOGS_LIST_REQ";
+export const GET_LOGS_LIST_RES = "GET_LOGS_LIST_RES";
+export const GET_LOGS_LIST_ERR = "GET_LOGS_LIST_ERR";

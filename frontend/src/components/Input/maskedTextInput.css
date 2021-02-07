@@ -1,0 +1,60 @@
+.in-valid-background {
+    background-color: #F5725A;
+    text-align: left;
+    border-radius: 8px;
+    color: #6c757d;
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 1px;
+}
+
+.valid-background {
+    background-color: #00CD63;
+    text-align: left;
+    border-radius: 8px;
+    color: #6c757d;
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 1px;
+}
+
+.empty-background {
+    background-color: #ffffff;
+    text-align: left;
+    border-radius: 8px;
+    color: #6c757d;
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 1px;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container, .react-datepicker__input-container input {
+    font-family: Montserrat,Helvetica Neue,Arial,sans-serif;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 8px;
+    color: #6c757d;
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 3px;
+}
+
+.react-datepicker__close-icon::after {
+  cursor: pointer;
+  background-color: #66615B;
+  color: #fff;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  padding: 2px;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  content: "\00d7";
+}

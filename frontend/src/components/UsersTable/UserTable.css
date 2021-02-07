@@ -1,0 +1,54 @@
+.dropdown-toggle::after {
+    margin-top: 5px;
+}
+
+table .btn-group > .btn:focus {
+    background-color: #66615B !important;
+}
+
+.table-users-mini {
+    display: none;
+}
+.user-detail-modal-header {
+    background: #00B0BA;
+}
+@media (max-width: 1200px) {
+
+    .table-users-mini {
+        display: block !important;
+    }
+
+    .table-users {
+        display: none;
+    }
+
+    .td-1, .td-2 {
+        width: 15%;
+    }
+
+    .td-2 {
+        text-align: center;
+    }
+}
+
+.drop-menu {
+    background: #f4f3ef !important;
+    left: -95px !important;
+}
+
+table .drop {
+    background: #f4f3ef;
+}
+
+.hover:hover {
+    background-color: #dbdbdb;
+}
+
+#activate, #activate-min {
+    width: 40% !important;
+    padding: .8em .7em !important;
+}
+
+#user-detail, #user-detail-min {
+    width: 40% !important;
+}

@@ -1,0 +1,93 @@
+.dropdown-item {
+    background: #eee !important;
+}
+
+.dropdown-item:hover {
+    background: #66615B !important;
+}
+
+.button-box {
+    width: 18.5em;
+}
+
+.button-box button {
+    border-width: 0.2em !important;
+}
+
+#user-info {
+    width: 40% !important;
+    padding: 0.8em 0.7em !important;
+}
+
+#remove-new-user-min, #remove-new-user, #remove-fired-user, #manage-user {
+    padding: 0.8em 2em !important;
+}
+
+#manage-user {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-left: -0.4em;
+}
+
+@media screen and (max-width: 900px) {
+    .button-box .dropdown-item {
+        font-size: 0.45em !important;
+        padding: 1em 1.5em !important;
+    }
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.btn-success-user-list {
+    background-color: #00DF6C;
+    color: #FFFFFF;
+}
+
+.btn-success-user-list:hover, .btn-success-user-list:focus, .btn-success-user-list:active, .btn-success-user-list.active, .btn-success-user-list:active:focus, .btn-success-user-list:active:hover, .btn-success-user-list.active:focus, .btn-success-user-list.active:hover,
+.show > .btn-success-user-list.dropdown-toggle,
+.show > .btn-success-user-list.dropdown-toggle:focus,
+.show > .btn-success-user-list.dropdown-toggle:hover {
+    background-color: #28A745 !important;
+    color: #FFFFFF !important;
+    box-shadow: none !important;
+}
+
+.btn-success-user-list:not([data-action]):hover {
+    box-shadow: none;
+}
+
+.btn-success-user-list.disabled, .btn-success-user-list.disabled:hover, .btn-success-user-list.disabled:focus, .btn-success-user-list.disabled.focus, .btn-success-user-list.disabled:active, .btn-success-user-list.disabled.active, .btn-success-user-list:disabled, .btn-success-user-list:disabled:hover, .btn-success-user-list:disabled:focus, .btn-success-user-list:disabled.focus, .btn-success-user-list:disabled:active, .btn-success-user-list:disabled.active, .btn-success-user-list[disabled], .btn-success-user-list[disabled]:hover, .btn-success-user-list[disabled]:focus, .btn-success-user-list[disabled].focus, .btn-success-user-list[disabled]:active, .btn-success-user-list[disabled].active,
+fieldset[disabled] .btn-success-user-list,
+fieldset[disabled] .btn-success-user-list:hover,
+fieldset[disabled] .btn-success-user-list:focus,
+fieldset[disabled] .btn-success-user-list.focus,
+fieldset[disabled] .btn-success-user-list:active,
+fieldset[disabled] .btn-success-user-list.active {
+    background-color: #6bd098;
+    border-color: #6bd098;
+}
+
+.btn-success-user-list.btn-simple {
+    color: #6bd098;
+    border-color: #6bd098;
+}
+
+.btn-success-user-list.btn-simple:hover, .btn-success-user-list.btn-simple:focus, .btn-success-user-list.btn-simple:active {
+    background-color: transparent;
+    color: #44c47d;
+    border-color: #44c47d;
+    box-shadow: none;
+}
+
+.btn-success-user-list.btn-link {
+    color: #6bd098;
+}
+
+.btn-success-user-list.btn-link:hover, .btn-success-user-list.btn-link:focus, .btn-success-user-list.btn-link:active, .btn-success-user-list.btn-link:active:focus {
+    background-color: transparent;
+    color: #44c47d;
+    text-decoration: none;
+    box-shadow: none;
+}
