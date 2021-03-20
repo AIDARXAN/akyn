@@ -1,6 +1,6 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import user_field
-from users_api.models import User
+from api.models import User
 from django.utils.translation import gettext as _
 from rest_framework.exceptions import ValidationError
 

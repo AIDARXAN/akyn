@@ -1,6 +1,6 @@
 from django.urls import path
 
-from users_api.views import CustomRegisterView, ProfileView
+from api.views import CustomRegisterView, ProfileView
 
 urlpatterns = [
     path('registration/', CustomRegisterView.as_view(), name='custom_rest_register'),

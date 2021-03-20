@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users_api.serializers import RegisterSerializer, UserSerializer
+from api.serializers import RegisterSerializer, UserSerializer
 
 
 class CustomRegisterView(RegisterView):

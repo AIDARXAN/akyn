@@ -5,7 +5,7 @@ import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-import users_api.models
+import api.models
 
 
 class Migration(migrations.Migration):
@@ -33,14 +33,14 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(max_length=54, unique=True)),
                 ('birth_date', models.DateField(blank=True, null=True)),
                 ('registration_date', models.DateField(auto_now_add=True)),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to=users_api.models.name_file, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['png', 'gif', 'jpeg', 'jpg'], message="Формат картинки должен быть только: ['png', 'gif', 'jpeg', 'jpg']")])),
+                ('avatar', models.ImageField(blank=True, null=True, upload_to=api.models.name_file, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['png', 'gif', 'jpeg', 'jpg'], message="Формат картинки должен быть только: ['png', 'gif', 'jpeg', 'jpg']")])),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
             ],
             options={
                 'verbose_name': 'User',
                 'verbose_name_plural': 'Users',
-                'db_table': 'users_api.users',
+                'db_table': 'api.users',
                 'ordering': ['first_name'],
             },
         ),
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Follow',
                 'verbose_name_plural': 'Follows',
-                'db_table': 'users_api.follows',
+                'db_table': 'api.follows',
                 'ordering': ['follow_creation_date'],
             },
         ),
