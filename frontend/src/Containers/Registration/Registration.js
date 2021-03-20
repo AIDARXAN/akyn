@@ -17,22 +17,24 @@ const Registration = () => {
     let error = useSelector(state => state.user.regError);
 
     const [user, setUser] = useState({
+        username: "",
         email: "",
         password1: "",
         password2: "",
         phone: "",
         first_name: "",
         last_name: "",
-        // telegram_id: ""
     });
 
     const regex = {
+        username: /^[a-zA-Z0-9_.-]*$/,
         email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         phone: /\+\(996\)[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{2}$/
     };
 
     const changeHandler = e => {
         let reg = /[^A-Za-z0-9@.]/ig;
+        if (e.target.name === "username") reg = null;
         if (e.target.name === "email") reg = null;
         if (e.target.name === "password") reg = null;
         const value = e.target.value.replace(reg, "");
@@ -45,7 +47,7 @@ const Registration = () => {
 
     const registrationSubmit = e => {
         e.preventDefault();
-
+        console.log(user)
         const userInfo = {...user};
         userInfo.phone = userInfo.phone.replace(/[+()-]/ig, "");
 
@@ -67,6 +69,18 @@ const Registration = () => {
             <CardBody className='p-4'>
                 <Logo center scale={0.8}/>
                 <form onSubmit={registrationSubmit}>
+
+                    <FormElement
+                        focus
+                        valid={regex.username.test(user.username)}
+                        invalidText={"Колдонуучунун аты англис тамгалары менен жазылыш керек"}
+                        name='username'
+                        placeholder='Колдонуучунун аты'
+                        alignPlaceholder='center'
+                        changeHandler={changeHandler}
+                        value={user.username}
+                        tooltip={"Колдонуучунун аты англис тамгалыры менен жазылат, башкача аттары username, login"}
+                    />
 
                     <FormElement
                         focus
