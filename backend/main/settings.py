@@ -58,9 +58,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 
     # apps
-    'feed_api',
-    'notification_api',
-    'users_api',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -99,23 +97,20 @@ SITE_ID=1
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-USER = os.environ.get('MYSQL_USER')
-HOST = os.environ.get('MYSQL_HOST')
-PASSWORD = os.environ.get('MYSQL_PASSWORD')
-DATABASE_NAME = os.environ.get('MYSQL_DATABASE')
-PORT = os.environ.get('MYSQL_PORT')
+USER = os.environ.get('POSTGRES_USER')
+HOST = os.environ.get('POSTGRES_HOST')
+PASSWORD = os.environ.get('POSTGRES_PASSWORD')
+DATABASE_NAME = os.environ.get('POSTGRES_DB')
+PORT = os.environ.get('POSTGRES_PORT')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': DATABASE_NAME,
         'USER': USER,
         'PASSWORD': PASSWORD,
         'HOST': HOST,
-        'PORT': PORT,
-        'NAME': DATABASE_NAME,
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        }
+        'PORT': '5432',
     }
 }
 
@@ -171,18 +166,17 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'common_error'
 }
 
-AUTH_USER_MODEL = 'users_api.User'
+AUTH_USER_MODEL = 'api.User'
 
 REST_AUTH_SERIALIZERS = {
-    'LOGIN_SERIALIZER': 'users_api.serializers.CustomLoginSerializer',
-    'REGISTER_SERIALIZER': 'users_api.serializers.RegisterSerializer',
-    'TOKEN_SERIALIZER': 'users_api.serializers.TokenSerializer',
+    # 'LOGIN_SERIALIZER': 'api.serializers.CustomLoginSerializer',
+    'REGISTER_SERIALIZER': 'api.serializers.RegisterSerializer',
+    'TOKEN_SERIALIZER': 'api.serializers.TokenSerializer',
 }
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_ADAPTER = 'users_api.adapters.CustomUserAccountAdapter'
+ACCOUNT_ADAPTER = 'api.adapters.CustomUserAccountAdapter'
