@@ -15,7 +15,7 @@ const Login = () => {
 
     let error = useSelector(state => state.user.logError);
 
-    const [user, setUser] = useState({email: "", password: ""});
+    const [user, setUser] = useState({username: "", password: ""});
 
     const changeHandler = e => setUser({...user, [e.target.name]: e.target.value});
 
@@ -35,8 +35,8 @@ const Login = () => {
                 <Logo center scale={0.8}/>
                 <form onSubmit={submitLogin}>
                     <FormElement
-                        name='email'
-                        placeholder='Email'
+                        name='username'
+                        placeholder='Колдонуучунун аты'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.email}
