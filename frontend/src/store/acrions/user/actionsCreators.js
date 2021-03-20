@@ -43,7 +43,7 @@ import {getNotifications, openErrorAlert, openSuccessAlert} from "../Notificatio
 export const userLogin = user => async dispatch => {
 
     try {
-        const token = await axiosApi.post("v1/rest-auth/login/", {email: user.email, password: user.password});
+        const token = await axiosApi.post("v1/rest-auth/login/", {username: user.username, email: "", password: user.password});
         dispatch(userLoginRes(token.data));
 
         dispatch(push("/profile"));
