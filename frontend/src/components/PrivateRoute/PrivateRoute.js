@@ -11,7 +11,6 @@ const PrivateRoute = ({
                           roles,
                           group,
                           notGroup,
-                          additionalGroup,
                           status,
                           ...rest
                       }) => {
@@ -22,17 +21,16 @@ const PrivateRoute = ({
             (
                 ((
                     (
-                        (typeof group === "object" && group.find(role => role === user.groups[0]?.name)) ||
-                        user.additional_group && additionalGroup && additionalGroup.find(group => group === user.additional_group?.name)
+                        (typeof group === "object" && group.find(role => role === user.groups[0]?.name))
                     )
                 )
                 ||
-                (!group && !additionalGroup)) && !!(status && status.find(s => s === user.status)) || !status
+                !group && !!(status && status.find(s => s === user.status)) || !status
             ) &&
             !!Component
                 ? <Component {...props}/>
                 : <Redirect to='/profile'/>
-        );
+        ))
     }}
     />;
 };
