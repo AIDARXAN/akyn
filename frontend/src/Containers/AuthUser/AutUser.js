@@ -44,7 +44,6 @@ const AutUser = (props) => {
                         return (
                             <PrivateRoute
                                 group={prop.groups}
-                                additionalGroup={prop.additionalGroup}
                                 status={prop.status}
                                 path={prop.path}
                                 component={prop.component}
