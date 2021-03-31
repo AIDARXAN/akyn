@@ -169,9 +169,10 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'api.User'
 
 REST_AUTH_SERIALIZERS = {
-    # 'LOGIN_SERIALIZER': 'api.serializers.CustomLoginSerializer',
+    'LOGIN_SERIALIZER': 'api.serializers.CustomLoginSerializer',
     'REGISTER_SERIALIZER': 'api.serializers.RegisterSerializer',
     'TOKEN_SERIALIZER': 'api.serializers.TokenSerializer',
+    'PASSWORD_RESET_CONFIRM_SERIALIZER': 'api.serializers.PasswordResetConfirmSerializer',
 }
 
 ACCOUNT_AUTHENTICATION_METHOD = "username"
@@ -180,3 +181,17 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_ADAPTER = 'api.adapters.CustomUserAccountAdapter'
+
+# Email settings
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL')
+SENDER_PASSWORD = os.environ.get('SENDER_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = SENDER_EMAIL
+EMAIL_HOST_PASSWORD = SENDER_PASSWORD
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Here you write url of the client password reset
+ROOT_DOMAIN = os.environ.get('ROOT_DOMAIN')
+PASSWORD_RESET_URI = os.environ.get('PASSWORD_RESET_URI', 'api/v1/users/password/reset/confirm/')

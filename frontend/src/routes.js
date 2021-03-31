@@ -25,11 +25,11 @@ const routes = [
         component: null
     }, {
         isVisible: false,
-        path: "/recover_password/:token",
+        path: "/recover-password/:token",
         component: null
     }, {
         isVisible: false,
-        path: "/reset",
+        path: "/reset-password",
         component: null
     }
 ];
