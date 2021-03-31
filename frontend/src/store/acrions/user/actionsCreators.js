@@ -11,22 +11,6 @@ import {
     editUserProfilePasswordRes,
     fetchCurrentUserErr,
     fetchCurrentUserRes,
-    fetchUsersFail,
-    fetchUsersRequest,
-    fetchUsersSuccess,
-    fetchWorkDayNormErr,
-    fetchWorkDayNormRes,
-    fireUserErr,
-    fireUserRes,
-    getContactsErr,
-    getContactsReq,
-    getContactsRes,
-    replaceTeacherErr,
-    replaceTeacherRes,
-    returnFromVacationUserErr,
-    returnFromVacationUserRes,
-    sendToVacationUserErr,
-    sendToVacationUserRes,
     userDeletionErr,
     userDeletionRes,
     userLoginErr,
@@ -85,7 +69,6 @@ export const userDelete = (data) => async dispatch => {
         );
 
         dispatch(userDeletionRes());
-        dispatch(fetchUsers());
         dispatch(getNotifications());
         dispatch(openSuccessAlert());
     } catch (e) {
@@ -93,91 +76,9 @@ export const userDelete = (data) => async dispatch => {
     }
 };
 
-export const fireUserRequest = (data) => async dispatch => {
-    try {
-        const userId = data.userId;
-        await axiosApi.put(
-            `v1/auth/users/${userId}/fire`,
-            {fired_at: data.fired_at}
-        );
-
-        dispatch(fireUserRes());
-        dispatch(fetchUsers());
-        dispatch(openSuccessAlert());
-    } catch (e) {
-        dispatch(fireUserErr(e.response.data));
-    }
-};
-
-export const sendToVacationUser = (data) => async dispatch => {
-    try {
-        const userId = data.userId;
-        await axiosApi.post(
-            `v1/auth/users/${userId}/send-to-vacation`,
-            {vacation_start_date: data.vacation_start_date, comment: data.comment}
-        );
-
-        dispatch(sendToVacationUserRes());
-        dispatch(fetchUsers());
-        dispatch(openSuccessAlert());
-    } catch (e) {
-        dispatch(sendToVacationUserErr(e.response));
-    }
-};
-
-export const returnFromVacationUser = (data, userId) => async dispatch => {
-    try {
-        await axiosApi.put(
-            `v1/auth/users/${userId}/send-to-vacation`,
-            {vacation_end_date: data.vacation_end_date, comment: data.comment}
-        );
-        dispatch(returnFromVacationUserRes());
-        dispatch(fetchUsers());
-        dispatch(openSuccessAlert());
-    } catch (e) {
-        dispatch(returnFromVacationUserErr(e.response));
-    }
-};
-
-// Fetch users
-
-export const fetchUsers = status => async dispatch => {
-    try {
-        dispatch(fetchUsersRequest());
-
-        if (status) {
-            const response = await axiosApi.get("v1/auth/users?status=" + status,);
-            return dispatch(fetchUsersSuccess(response.data));
-        }
-        const response = await axiosApi.get("v1/auth/users");
-        dispatch(fetchUsersSuccess(response.data));
-
-    } catch (e) {
-        dispatch(fetchUsersFail(e.response.data));
-    }
-};
-
-
-export const getContacts = status => async dispatch => {
-    try {
-        dispatch(getContactsReq());
-
-        if (status) {
-            const data = await axiosApi.get("v1/auth/users/contacts?status=" + status);
-
-            return dispatch(getContactsRes(data.data));
-        }
-        const data = await axiosApi.get("v1/auth/users/contacts");
-
-        dispatch(getContactsRes(data.data));
-    } catch (e) {
-        dispatch(getContactsErr(e.response.data));
-    }
-};
-
 export const fetchCurrentUser = () => async dispatch => {
     try {
-        const response = await axiosApi.get("v1/auth/users/current");
+        const response = await axiosApi.get("v1/auth/users/current/");
 
         dispatch(fetchCurrentUserRes(response.data));
         dispatch(getNotifications());
@@ -235,44 +136,8 @@ export const editUserClassesAndRights = data => async dispatch => {
         );
 
         dispatch(editUserClassesAndRightsRes());
-        dispatch(fetchUsers());
         dispatch(openSuccessAlert());
     } catch (e) {
         dispatch(editUserClassesAndRightsErr(e.response.data));
-    }
-};
-
-export const replaceTeacherRequest = data => async dispatch => {
-    try {
-        await axiosApi.post(
-            "v1/auth/users/replace",
-            {
-                from_user: data.teacher,
-                to_user: data.support,
-                date: data.replacement_date,
-                comment: data.comment
-            }
-        );
-        dispatch(replaceTeacherRes());
-        dispatch(fetchUsers());
-        dispatch(openSuccessAlert());
-    } catch (e) {
-        dispatch(replaceTeacherErr(e.response.data));
-    }
-};
-
-export const fetchWorkDayNorm = (month, year, groupId, additionalGroupId) => async (dispatch, getState) => {
-    try {
-        let url = `v1/work-day-norm?month=${month}&year=${year}`;
-        if (additionalGroupId)
-            url += `&additional_group=true`;
-        if (groupId)
-            url += `&group_id=${groupId}`;
-
-        const response = await axiosApi.get(url);
-
-        dispatch(fetchWorkDayNormRes(response.data));
-    } catch (e) {
-        dispatch(fetchWorkDayNormErr(e.response.data));
     }
 };
