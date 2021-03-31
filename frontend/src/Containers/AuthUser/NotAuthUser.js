@@ -15,8 +15,8 @@ const NotAuthUser = () => {
             <Switch>
                 <Route path="/registration" exact component={Registration}/>
                 <Route path="/login" exact component={Login}/>
-                <Route path="/reset" exact component={PasswordReset}/>
-                <Route path="/recover_password/:token" exact component={PasswordResetConfirm}/>
+                <Route path="/reset-password" exact component={PasswordReset}/>
+                <Route path="/recover-password/:token" exact component={PasswordResetConfirm}/>
 
                 <Redirect to={"/login"}/>
             </Switch>

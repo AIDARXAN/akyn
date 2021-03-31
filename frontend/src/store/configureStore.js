@@ -7,7 +7,6 @@ import {loadFromLocalStorage, localStorageMiddleware} from "./localStorage";
 import userReducer from "./reducers/userReducer";
 import passwordResetReducer from "./reducers/passwordResetReducer";
 import passwordResetConfirmReducer from "./reducers/passwordResetConfirmReducer";
-import activateUserReducer from "./reducers/activateUserReducer";
 import notificationReducer from "./reducers/notificationReducer";
 
 
@@ -21,7 +20,6 @@ const rootReducer = combineReducers({
     notification: notificationReducer,
     passwordReset: passwordResetReducer,
     passwordResetConfirm: passwordResetConfirmReducer,
-    activateUser: activateUserReducer,
 });
 
 const middleware = [
