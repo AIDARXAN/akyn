@@ -1,16 +1,18 @@
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
+from django.contrib.auth import password_validation
 from rest_auth.models import TokenModel
 from rest_auth.registration.serializers import RegisterSerializer
 from rest_auth.serializers import LoginSerializer, TokenSerializer
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from api.models import User
 
 
-# class CustomLoginSerializer(LoginSerializer):
-#     class Meta:
-#         fields = ['username', 'password']
+class CustomLoginSerializer(LoginSerializer):
+    class Meta:
+        fields = ['username', 'password']
 
 
 class RegisterSerializer(RegisterSerializer):
@@ -59,3 +61,32 @@ class TokenSerializer(TokenSerializer):
     class Meta:
         model = TokenModel
         fields = ['key', 'user']
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    """
+       Serializer for requesting a password reset e-mail.
+       """
+    new_password1 = serializers.CharField(max_length=128)
+    new_password2 = serializers.CharField(max_length=128)
+
+    password = None
+
+    def validate(self, data):
+        password1 = data.get('new_password1')
+        password2 = data.get('new_password2')
+        if password1 and password2:
+            if password1 != password2:
+                raise ValidationError(
+                    self.error_messages['password_mismatch'],
+                    code='password_mismatch',
+                )
+        password_validation.validate_password(password2, self.context.get('user'))
+        self.password = password2
+        return password2
+
+    def save(self):
+        self.user = self.context.get('user')
+        self.user.set_password(self.password)
+        self.user.save()
+        return self.user
