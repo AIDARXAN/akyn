@@ -27,7 +27,7 @@ class User(AbstractUser):
             )
         ]
     )
-
+    token = models.CharField(null=True, blank=True, max_length=255)
     USERNAME_FIELD = "username"
 
     class Meta:
