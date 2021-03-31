@@ -68,7 +68,7 @@ const Login = () => {
             <CardFooter className='border-top text-center p-3' style={{background: "#f6f6f6"}}>
                 <NavLink id='toRegistration' to='/registration' style={{fontSize: "16px"}}>Каттоо</NavLink>
                 <br/>
-                <NavLink id='toReset' to='/reset' style={{fontSize: "16px"}}>Парол унуттуңузбу?</NavLink>
+                <NavLink id='toReset' to='/reset-password' style={{fontSize: "16px"}}>Парол унуттуңузбу?</NavLink>
             </CardFooter>
         </Card>
     );
