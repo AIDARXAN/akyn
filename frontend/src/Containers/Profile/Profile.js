@@ -98,23 +98,10 @@ const Profile = () => {
                                     </div>
                                     </span>
                                     <div>
-                                        <h5 className="title d-inline-block">{user.first_name}</h5>{" "}
-                                        <h5 className="title d-inline-block">{user.last_name}</h5>
+                                        <h5 className="title d-inline-block">логин: {user.username}</h5>
                                     </div>
 
-                                    <p className="description font-weight-bold">{user.email}</p>
-
-                                    <p className="description te">
-                                        <strong>Номер телефона: </strong> <b
-                                        style={{color: "#00b0ba", fontWeight: "bold"}}>+{user.phone}</b>
-                                    </p>
-
-                                    {user.groups[0] && <p className="description">
-                                        <strong>Тип: </strong> <b
-                                        style={{color: "#00b0ba", fontWeight: "bold"}}>{userRolesRus[user.groups[0]?.name]}</b>
-                                    </p>}
-
-
+                                    <p className="description font-weight-bold">{user.first_name} {user.last_name}</p>
                                     <button
                                         className="edit-btn"
                                         id="edit-profile-btn"
