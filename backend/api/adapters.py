@@ -16,7 +16,6 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
         user = super().save_user(request, user, form, False)
         user_field(user, 'first_name', request.data.get('first_name', ''))
         user_field(user, 'last_name', request.data.get('last_name', ''))
-        user_field(user, 'phone', request.data.get('phone', ''))
         if commit:
             user.save()
 
