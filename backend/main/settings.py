@@ -157,11 +157,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'NON_FIELD_ERRORS_KEY': 'common_error'
 }
@@ -195,3 +197,6 @@ EMAIL_USE_TLS = True
 # Here you write url of the client password reset
 ROOT_DOMAIN = os.environ.get('ROOT_DOMAIN')
 PASSWORD_RESET_URI = os.environ.get('PASSWORD_RESET_URI', 'api/v1/users/password/reset/confirm/')
+
+TEN_MEGABYTES_IN_BYTES = 10000000
+IMAGE_CONTENT_TYPES = ['image/gif', 'image/jpeg', 'image/png']
