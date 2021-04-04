@@ -23,7 +23,6 @@ const AutUser = (props) => {
         <div className="wrapper">
             <SuccessAlert/>
             <ErrorAlert/>
-            <ImportantNotificationAlert/>
             <Sidebar
                 {...props}
                 routes={routes}
@@ -37,7 +36,7 @@ const AutUser = (props) => {
 
                     <Route path="/" exact
                            render={() => <div className="content">
-                               <Redirect to={'/profile'} />
+                               <Redirect to={'/profile'}/>
                            </div>}/>
 
                     {routes.map((prop, key) => {
