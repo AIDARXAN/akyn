@@ -21,7 +21,6 @@ const Registration = () => {
         email: "",
         password1: "",
         password2: "",
-        phone: "",
         first_name: "",
         last_name: "",
     });
@@ -29,7 +28,6 @@ const Registration = () => {
     const regex = {
         username: /^[a-zA-Z0-9_.-]*$/,
         email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        phone: /\+\(996\)[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{2}$/
     };
 
     const changeHandler = e => {
@@ -41,15 +39,12 @@ const Registration = () => {
         setUser({...user, [e.target.name]: value});
     };
 
-    const changePhone = e => setUser({...user, [e.target.name]: e.target.value});
 
     const onlyRussian = e => setUser({...user, [e.target.name]: e.target.value.replace(/[^А-Яа-яЁё]/ig, "")});
 
     const registrationSubmit = e => {
         e.preventDefault();
-        console.log(user)
         const userInfo = {...user};
-        userInfo.phone = userInfo.phone.replace(/[+()-]/ig, "");
 
         dispatch(userRegistration(userInfo));
     };
@@ -58,7 +53,6 @@ const Registration = () => {
 
     const submitDisabled = !!Object.keys(user).find(e => user[e] === "") ||
         !regex.email.test(user.email) ||
-        !regex.phone.test(user.phone) ||
         user.password1.length < minimumCharactersToPassword ||
         user.password1 !== user.password2;
     return (
@@ -116,18 +110,6 @@ const Registration = () => {
                         changeHandler={changeHandler}
                         value={user.password2}
                         tooltip="Паролду кайталаңыз"
-                    />
-
-                    <FormElement
-                        valid={regex.phone.test(user.phone)}
-                        invalidText={"Телефондун форматы ушуга окшош болушу зарыл +(996)ххх-хх-хх-хх"}
-                        name='phone'
-                        mask="+(\9\96)999-99-99-99"
-                        placeholder='Телефон'
-                        alignPlaceholder='center'
-                        changeHandler={changePhone}
-                        value={user.phone}
-                        tooltip="Телефондун номуру сан гана камтыш керек"
                     />
 
                     <FormElement
