@@ -1,13 +1,14 @@
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
+from django.conf import settings
 from django.contrib.auth import password_validation
 from rest_auth.models import TokenModel
 from rest_auth.registration.serializers import RegisterSerializer
-from rest_auth.serializers import LoginSerializer, TokenSerializer
+from rest_auth.serializers import LoginSerializer, TokenSerializer as BuiltInTokenSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
-from api.models import User
+from django.utils.translation import gettext_lazy as _
+from api.models import User, Publication, Follow
 
 
 class CustomLoginSerializer(LoginSerializer):
@@ -16,7 +17,6 @@ class CustomLoginSerializer(LoginSerializer):
 
 
 class RegisterSerializer(RegisterSerializer):
-    phone = serializers.CharField(max_length=12, write_only=True)
     first_name = serializers.CharField(max_length=255, write_only=True)
     last_name = serializers.CharField(max_length=255, write_only=True)
 
@@ -29,8 +29,7 @@ class RegisterSerializer(RegisterSerializer):
             'password1': self.validated_data.get('password1', ''),
             'email': self.validated_data.get('email', ''),
             'first_name': self.validated_data.get('first_name', ''),
-            'last_name': self.validated_data.get('last_name', ''),
-            'phone': self.validated_data.get('phone', ''),
+            'last_name': self.validated_data.get('last_name', '')
         }
 
     def save(self, request):
@@ -45,17 +44,54 @@ class RegisterSerializer(RegisterSerializer):
         ref_name = 'custom register serializer'
 
 
+class PublicationSerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, obj):
+        likes_count = obj.likes.all().count()
+        return likes_count
+
+    class Meta:
+        model = Publication
+        fields = ['id', 'likes', 'description', 'creation_date', 'status']
+
+
 class UserSerializer(serializers.ModelSerializer):
+    publications = PublicationSerializer(many=True)
+    followers = serializers.SerializerMethodField()
+    follows = serializers.SerializerMethodField()
+
+    def get_followers(self, obj):
+        followers_count = Follow.objects.filter(user__pk=obj.pk).count()
+        return followers_count
+
+    def get_follows(self, obj):
+        follows_count = Follow.objects.filter(subscriber__pk=obj.pk).count()
+        return follows_count
+
     class Meta:
         model = User
         fields = [
-            'id', 'username', 'email', 'first_name',
-            'last_name', 'phone', 'is_active',
-            'avatar', 'birth_date', 'groups', 'is_superuser',
+            'id', 'username', 'first_name',
+            'last_name', 'email',
+            'avatar', 'publications',
+            'followers', 'follows'
         ]
 
 
-class TokenSerializer(TokenSerializer):
+class ProfileThirdUserSerializer(serializers.ModelSerializer):
+    publications = PublicationSerializer(many=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'username', 'first_name',
+            'last_name',
+            'avatar', 'publications'
+        ]
+
+
+class TokenSerializer(BuiltInTokenSerializer):
     user = UserSerializer()
 
     class Meta:
@@ -90,3 +126,22 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         self.user.set_password(self.password)
         self.user.save()
         return self.user
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['avatar']
+
+    def validate_avatar(self, avatar):
+        if avatar.size > settings.TEN_MEGABYTES_IN_BYTES:
+            raise serializers.ValidationError(_("File size of avatar is bigger than 10MB"))
+        if avatar.content_type not in settings.IMAGE_CONTENT_TYPES:
+            raise serializers.ValidationError(_("Avatar content type is not allowed."))
+        return avatar
+
+    def update(self, instance, validated_data):
+        instance.avatar.delete()
+        instance.avatar = validated_data.get('avatar')
+        instance.save()
+        return instance
