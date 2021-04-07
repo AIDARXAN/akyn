@@ -1,6 +1,12 @@
 from drf_yasg import openapi
 
-bad_request = openapi.Response(description='No_content')
-not_found = openapi.Response(description='Not Found')
-success_response_ok = openapi.Response(description="Ok")
+bad_request_response = openapi.Response(description='No content')
+not_found_response = openapi.Response(description='Not Found')
+created_response = openapi.Response(description="Created")
+no_content_response = openapi.Response(description="No content")
+
+def success_response_ok(serializer):
+    return openapi.Response(description="Ok", schema=serializer)
+
+
 
