@@ -79,3 +79,8 @@ class Publication(models.Model):
         verbose_name = _('Publication')
         verbose_name_plural = _('Publications')
         ordering = ['-creation_date']
+
+    def update_publication(self, data):
+        self.description = data.get('description')
+        self.status = data.get('status')
+        self.save()
