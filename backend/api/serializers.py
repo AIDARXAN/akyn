@@ -2,6 +2,7 @@ from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 from django.conf import settings
 from django.contrib.auth import password_validation
+from django.shortcuts import get_object_or_404
 from rest_auth.models import TokenModel
 from rest_auth.registration.serializers import RegisterSerializer
 from rest_auth.serializers import LoginSerializer, TokenSerializer as BuiltInTokenSerializer
@@ -44,8 +45,25 @@ class RegisterSerializer(RegisterSerializer):
         ref_name = 'custom register serializer'
 
 
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id', 'username', 'first_name',
+            'last_name', 'avatar'
+        ]
+
+
+class PublicationEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publication
+        fields = ['description', 'status']
+
+
 class PublicationSerializer(serializers.ModelSerializer):
-    likes = serializers.SerializerMethodField()
+    likes = serializers.SerializerMethodField(read_only=True)
+    creation_date = serializers.DateTimeField(read_only=True)
+    user = UserInfoSerializer(read_only=True, allow_null=True)
 
     def get_likes(self, obj):
         likes_count = obj.likes.all().count()
@@ -53,7 +71,7 @@ class PublicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Publication
-        fields = ['id', 'likes', 'description', 'creation_date', 'status']
+        fields = ['id', 'likes', 'description', 'creation_date', 'status', 'user']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -81,13 +99,24 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileThirdUserSerializer(serializers.ModelSerializer):
     publications = PublicationSerializer(many=True)
+    followers = serializers.SerializerMethodField()
+    follows = serializers.SerializerMethodField()
+
+    def get_followers(self, obj):
+        followers_count = Follow.objects.filter(user__pk=obj.pk).count()
+        return followers_count
+
+    def get_follows(self, obj):
+        follows_count = Follow.objects.filter(subscriber__pk=obj.pk).count()
+        return follows_count
 
     class Meta:
         model = User
         fields = [
             'username', 'first_name',
             'last_name',
-            'avatar', 'publications'
+            'avatar', 'publications',
+            'followers', 'follows'
         ]
 
 
