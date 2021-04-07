@@ -78,7 +78,7 @@ export const userDelete = (data) => async dispatch => {
 
 export const fetchCurrentUser = () => async dispatch => {
     try {
-        const response = await axiosApi.get("v1/auth/users/current/");
+        const response = await axiosApi.get("v1/users/current/");
 
         dispatch(fetchCurrentUserRes(response.data));
         dispatch(getNotifications());
