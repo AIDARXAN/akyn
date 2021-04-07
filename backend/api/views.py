@@ -1,6 +1,4 @@
-from django.shortcuts import render, get_object_or_404
-
-# Create your views here.
+from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_auth.registration.views import RegisterView
@@ -9,9 +7,10 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.drf_yasg_responses import success_response_ok, bad_request, not_found
-from api.models import User
-from api.serializers import RegisterSerializer, UserSerializer, ImageSerializer, ProfileThirdUserSerializer
+from api.drf_yasg_responses import success_response_ok, bad_request_response, not_found_response, created_response, no_content_response
+from api.models import User, Publication
+from api.serializers import RegisterSerializer, UserSerializer, ImageSerializer, ProfileThirdUserSerializer, \
+    PublicationSerializer, PublicationEditSerializer
 
 
 class CustomRegisterView(RegisterView):
@@ -48,9 +47,9 @@ class AvatarViewSet(APIView):
     @swagger_auto_schema(
         operation_description="An endpoint for editing user avatar",
         request_body=serializer,
-        responses={status.HTTP_200_OK: success_response_ok,
-                   status.HTTP_400_BAD_REQUEST: bad_request,
-                   status.HTTP_404_NOT_FOUND: not_found},
+        responses={status.HTTP_200_OK: success_response_ok(serializer),
+                   status.HTTP_400_BAD_REQUEST: bad_request_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
     )
     def put(self, request):
         serializer = self.serializer(data=request.data)
@@ -62,17 +61,13 @@ class AvatarViewSet(APIView):
 
 class ProfileView(APIView):
     serializer = UserSerializer
-    success_response = openapi.Response(
-        description="Success",
-        schema=serializer
-    )
 
     @swagger_auto_schema(
         operation_description="Get users current profile",
 
-        responses={status.HTTP_200_OK: success_response,
-                   status.HTTP_400_BAD_REQUEST: bad_request,
-                   status.HTTP_404_NOT_FOUND: not_found},
+        responses={status.HTTP_200_OK: success_response_ok(serializer),
+                   status.HTTP_400_BAD_REQUEST: bad_request_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
     )
     def get(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
@@ -82,9 +77,9 @@ class ProfileView(APIView):
     @swagger_auto_schema(
         operation_description="Updates users profile data",
         request_body=serializer,
-        responses={status.HTTP_200_OK: success_response,
-                   status.HTTP_400_BAD_REQUEST: bad_request,
-                   status.HTTP_404_NOT_FOUND: not_found},
+        responses={status.HTTP_200_OK: success_response_ok(serializer),
+                   status.HTTP_400_BAD_REQUEST: bad_request_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
     )
     def put(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
@@ -96,8 +91,8 @@ class ProfileView(APIView):
 
     @swagger_auto_schema(
         operation_description="Deletes user profile and all publications, comments with it",
-        responses={status.HTTP_204_NO_CONTENT: success_response,
-                   status.HTTP_404_NOT_FOUND: not_found},
+        responses={status.HTTP_204_NO_CONTENT: no_content_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
     )
     def delete(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
@@ -112,5 +107,61 @@ class ProfileViewForThirdUser(APIView):
         user = get_object_or_404(User, username=username)
         serializer = self.serializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PublicationView(APIView):
+    serializer = PublicationEditSerializer
+
+    @swagger_auto_schema(
+        operation_description="Deletes user profile and all publications, comments with it",
+        request_body=serializer,
+        responses={status.HTTP_201_CREATED: created_response,
+                   status.HTTP_400_BAD_REQUEST: bad_request_response},
+    )
+    def post(self, request):
+        serializer = self.serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        Publication.objects.create(user=request.user, **request.data)
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class PublicationDetailView(APIView):
+    serializer = PublicationSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get users current profile",
+        responses={status.HTTP_200_OK: success_response_ok(serializer),
+                   status.HTTP_400_BAD_REQUEST: bad_request_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def get(self, request, publication_pk):
+        publication = get_object_or_404(Publication, pk=publication_pk)
+        serializer = self.serializer(publication)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Get users current profile",
+        request_body=serializer,
+        responses={status.HTTP_200_OK: success_response_ok(PublicationEditSerializer),
+                   status.HTTP_400_BAD_REQUEST: bad_request_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def put(self, request, publication_pk):
+        publication = get_object_or_404(Publication, pk=publication_pk, user=request.user)
+        serializer = PublicationEditSerializer(data=request.data)
+        serializer.is_valid()
+        validated_data = serializer.validated_data
+        publication.update_publication(validated_data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Get users current profile",
+        responses={status.HTTP_204_NO_CONTENT: no_content_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def delete(self, request, publication_pk):
+        publication = get_object_or_404(Publication, pk=publication_pk, user=request.user)
+        publication.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
