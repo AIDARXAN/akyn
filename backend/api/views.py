@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.drf_yasg_responses import success_response_ok, bad_request_response, not_found_response, created_response, no_content_response
-from api.models import User, Publication
+from api.models import User, Publication, Follow
 from api.serializers import RegisterSerializer, UserSerializer, ImageSerializer, ProfileThirdUserSerializer, \
     PublicationSerializer, PublicationEditSerializer
 
@@ -71,7 +71,7 @@ class ProfileView(APIView):
     )
     def get(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
-        serializer = self.serializer(user)
+        serializer = self.serializer(user, context={'request': request})
         return Response(serializer.data, status.HTTP_200_OK)
 
     @swagger_auto_schema(
@@ -105,7 +105,7 @@ class ProfileViewForThirdUser(APIView):
 
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
-        serializer = self.serializer(user)
+        serializer = self.serializer(user, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -136,7 +136,7 @@ class PublicationDetailView(APIView):
     )
     def get(self, request, publication_pk):
         publication = get_object_or_404(Publication, pk=publication_pk)
-        serializer = self.serializer(publication)
+        serializer = self.serializer(publication, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
@@ -162,6 +162,52 @@ class PublicationDetailView(APIView):
     def delete(self, request, publication_pk):
         publication = get_object_or_404(Publication, pk=publication_pk, user=request.user)
         publication.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PublicationLikeView(APIView):
+
+    @swagger_auto_schema(
+        operation_description="Add like to the post",
+        responses={status.HTTP_201_CREATED: created_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def post(self, request, publication_pk):
+        publication = get_object_or_404(Publication, pk=publication_pk)
+        publication.likes.add(request.user)
+        return Response(status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(
+        operation_description="Remove like from the post",
+        responses={status.HTTP_204_NO_CONTENT: no_content_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def delete(self, request, publication_pk):
+        publication = get_object_or_404(Publication, pk=publication_pk)
+        publication.likes.remove(request.user)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserSubscribeView(APIView):
+
+    @swagger_auto_schema(
+        operation_description="Subscribe on user",
+        responses={status.HTTP_201_CREATED: created_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def post(self, request, username):
+        user = get_object_or_404(User, username=username)
+        user.followers.add(request.user)
+        return Response(status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(
+        operation_description="Unsubscribe",
+        responses={status.HTTP_204_NO_CONTENT: created_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def delete(self, request, username):
+        user = get_object_or_404(User, username=username)
+        user.followers.remove(request.user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

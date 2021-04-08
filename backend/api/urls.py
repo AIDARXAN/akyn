@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('users/current/', ProfileView.as_view(), name='user_profile'),
     path('users/<str:username>/', ProfileViewForThirdUser.as_view(), name='profile_view_for_third_party'),
+    path('users/<str:username>/subscribe/', UserSubscribeView.as_view(), name='subscribe_user'),
     # path('users/search/<str:search>/'),
 
     path('publications/', PublicationView.as_view(), name='publications'),
