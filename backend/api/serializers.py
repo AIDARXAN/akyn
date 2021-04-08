@@ -107,6 +107,12 @@ class ProfileThirdUserSerializer(serializers.ModelSerializer):
     publications = PublicationSerializer(many=True)
     followers = serializers.SerializerMethodField()
     follows = serializers.SerializerMethodField()
+    is_subscribed = serializers.SerializerMethodField()
+
+    def get_is_subscribed(self, obj):
+        request = self.context.get('request')
+        is_following = Follow.objects.filter(user__pk=obj.pk, subscriber__pk=request.user.pk).exists()
+        return is_following
 
     def get_followers(self, obj):
         followers_count = Follow.objects.filter(user__pk=obj.pk).count()
@@ -122,7 +128,7 @@ class ProfileThirdUserSerializer(serializers.ModelSerializer):
             'username', 'first_name',
             'last_name',
             'avatar', 'publications',
-            'followers', 'follows'
+            'followers', 'follows', 'is_subscribed'
         ]
 
 
