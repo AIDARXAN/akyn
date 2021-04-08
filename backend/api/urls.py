@@ -1,7 +1,8 @@
 from django.urls import path
 
 from api.api_views.password_reset import PasswordResetView, PasswordResetConfirmView
-from api.views import CustomRegisterView, ProfileView, ProfileViewForThirdUser, PublicationDetailView, PublicationView
+from api.views import CustomRegisterView, ProfileView, ProfileViewForThirdUser, PublicationDetailView, PublicationView, \
+    PublicationLikeView, UserSubscribeView
 
 urlpatterns = [
     path('auth/registration/', CustomRegisterView.as_view(), name='custom_rest_register'),
@@ -18,4 +19,6 @@ urlpatterns = [
 
     path('publications/', PublicationView.as_view(), name='publications'),
     path('publications/<int:publication_pk>/', PublicationDetailView.as_view(), name='publication_detail'),
+    path('publications/<int:publication_pk>/like', PublicationLikeView.as_view(), name='like_publication')
+
 ]
