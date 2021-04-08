@@ -61,6 +61,7 @@ class Follow(models.Model):
     follow_creation_date = models.DateField(auto_now_add=True)
 
     class Meta:
+        unique_together = ['user', 'subscriber']
         db_table = 'api.follows'
         verbose_name = _('Follow')
         verbose_name_plural = _('Follows')
