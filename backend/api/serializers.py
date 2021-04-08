@@ -64,6 +64,12 @@ class PublicationSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
     creation_date = serializers.DateTimeField(read_only=True)
     user = UserInfoSerializer(read_only=True, allow_null=True)
+    is_liked = serializers.SerializerMethodField(read_only=True)
+
+    def get_is_liked(self, obj):
+        request = self.context.get('request')
+        is_liked = Publication.objects.filter(pk=obj.pk, likes=request.user.pk).exists()
+        return is_liked
 
     def get_likes(self, obj):
         likes_count = obj.likes.all().count()
@@ -71,7 +77,7 @@ class PublicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Publication
-        fields = ['id', 'likes', 'description', 'creation_date', 'status', 'user']
+        fields = ['id', 'likes', 'description', 'creation_date', 'status', 'user', 'is_liked']
 
 
 class UserSerializer(serializers.ModelSerializer):
