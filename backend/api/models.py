@@ -70,7 +70,7 @@ class Follow(models.Model):
 
 class Publication(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publications')
-    likes = models.ManyToManyField(User)
+    likes = models.ManyToManyField(User, blank=True)
     description = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
     status = models.PositiveSmallIntegerField(choices=PUBLICATION_TYPE, null=False, default=PUBLISHED)
