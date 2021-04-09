@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -10,7 +11,7 @@ from rest_framework.views import APIView
 from api.drf_yasg_responses import success_response_ok, bad_request_response, not_found_response, created_response, no_content_response
 from api.models import User, Publication, Follow
 from api.serializers import RegisterSerializer, UserSerializer, ImageSerializer, ProfileThirdUserSerializer, \
-    PublicationSerializer, PublicationEditSerializer
+    PublicationSerializer, PublicationEditSerializer, UserFollowersListSerializer
 
 
 class CustomRegisterView(RegisterView):
@@ -197,7 +198,7 @@ class UserSubscribeView(APIView):
     )
     def post(self, request, username):
         user = get_object_or_404(User, username=username)
-        user.followers.add(request.user)
+        Follow.objects.get_or_create(user=user, subscriber=request.user)
         return Response(status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(
@@ -211,3 +212,30 @@ class UserSubscribeView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class UserFollowersListView(APIView):
+    serializer = UserFollowersListSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get users followers",
+        responses={status.HTTP_200_OK: success_response_ok(serializer)}
+    )
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        users = user.followers.all().exclude(pk=request.user.pk)
+        serializer = self.serializer(users, context={'request': request}, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserFollowsListView(APIView):
+    serializer = UserFollowersListSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get users follows",
+        responses={status.HTTP_200_OK: success_response_ok(serializer)}
+    )
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        follows = Follow.objects.filter(subscriber__pk=user.pk).values_list('user__pk', flat=True)
+        users = User.objects.filter(pk__in=follows)
+        serializer = self.serializer(users, context={'request': request}, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
