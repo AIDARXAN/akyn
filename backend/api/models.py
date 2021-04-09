@@ -85,3 +85,22 @@ class Publication(models.Model):
         self.description = data.get('description')
         self.status = data.get('status')
         self.save()
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE, related_name='comments')
+    description = models.CharField(max_length=500)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    changed = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'api.comments'
+        verbose_name = _('Comment')
+        verbose_name_plural = _('Comments')
+        ordering = ['-creation_date']
+
+    def update_comment(self, data):
+        self.description = data.get('description')
+        self.changed = True
+        self.save()
