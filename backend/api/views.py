@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -9,9 +10,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.drf_yasg_responses import success_response_ok, bad_request_response, not_found_response, created_response, no_content_response
-from api.models import User, Publication, Follow
+from api.models import User, Publication, Follow, Comment
 from api.serializers import RegisterSerializer, UserSerializer, ImageSerializer, ProfileThirdUserSerializer, \
-    PublicationSerializer, PublicationEditSerializer, UserFollowersListSerializer
+    PublicationSerializer, PublicationEditSerializer, UserFollowersListSerializer, CommentSerializer, \
+    CommentPostSerializer, UserInfoSerializer
 
 
 class CustomRegisterView(RegisterView):
@@ -130,7 +132,7 @@ class PublicationDetailView(APIView):
     serializer = PublicationSerializer
 
     @swagger_auto_schema(
-        operation_description="Get users current profile",
+        operation_description="Returns one publication",
         responses={status.HTTP_200_OK: success_response_ok(serializer),
                    status.HTTP_400_BAD_REQUEST: bad_request_response,
                    status.HTTP_404_NOT_FOUND: not_found_response},
@@ -141,7 +143,7 @@ class PublicationDetailView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
-        operation_description="Get users current profile",
+        operation_description="update publication",
         request_body=serializer,
         responses={status.HTTP_200_OK: success_response_ok(PublicationEditSerializer),
                    status.HTTP_400_BAD_REQUEST: bad_request_response,
@@ -156,7 +158,7 @@ class PublicationDetailView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
-        operation_description="Get users current profile",
+        operation_description="delete publication from database permanently",
         responses={status.HTTP_204_NO_CONTENT: no_content_response,
                    status.HTTP_404_NOT_FOUND: not_found_response},
     )
@@ -203,7 +205,7 @@ class UserSubscribeView(APIView):
 
     @swagger_auto_schema(
         operation_description="Unsubscribe",
-        responses={status.HTTP_204_NO_CONTENT: created_response,
+        responses={status.HTTP_204_NO_CONTENT: no_content_response,
                    status.HTTP_404_NOT_FOUND: not_found_response},
     )
     def delete(self, request, username):
@@ -239,3 +241,77 @@ class UserFollowsListView(APIView):
         users = User.objects.filter(pk__in=follows)
         serializer = self.serializer(users, context={'request': request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CommentsView(APIView):
+    serializer = CommentSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get comments list of publication",
+        responses={status.HTTP_200_OK: success_response_ok(serializer)}
+    )
+    def get(self, request, publication_pk):
+        comments = Comment.objects.filter(publication__pk=publication_pk)
+        serializer = self.serializer(comments, many=True, context={'user': request.user})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Create comment under the post",
+        request_body=CommentPostSerializer,
+        responses={status.HTTP_201_CREATED: created_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def post(self, request, publication_pk):
+        publication = get_object_or_404(Publication, pk=publication_pk)
+        serializer = CommentPostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        Comment.objects.create(user=request.user, publication=publication, description=serializer.data.get('description'))
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class CommentsDetailView(APIView):
+    serializer = CommentPostSerializer
+
+    @swagger_auto_schema(
+        operation_description="Update comment",
+        request_body=serializer,
+        responses={status.HTTP_200_OK: success_response_ok(PublicationEditSerializer),
+                   status.HTTP_400_BAD_REQUEST: bad_request_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def put(self, request, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk, user=request.user)
+        serializer = self.serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        comment.update_comment(serializer.validated_data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Unsubscribe",
+        responses={status.HTTP_204_NO_CONTENT: no_content_response,
+                   status.HTTP_404_NOT_FOUND: not_found_response},
+    )
+    def delete(self, request, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk, user=request.user)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserSearchView(APIView):
+    serializer = UserInfoSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get users list search",
+        responses={status.HTTP_200_OK: success_response_ok(serializer)}
+    )
+    def get(self, request, search):
+        if len(search) > 1:
+            users = User.objects.filter(
+                Q(username__contains=search) |
+                Q(first_name__contains=search) |
+                Q(last_name__contains=search)
+            )
+            serializer = self.serializer(users, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
