@@ -2,7 +2,8 @@ from django.urls import path
 
 from api.api_views.password_reset import PasswordResetView, PasswordResetConfirmView
 from api.views import CustomRegisterView, ProfileView, ProfileViewForThirdUser, PublicationDetailView, PublicationView, \
-    PublicationLikeView, UserSubscribeView, UserFollowersListView, UserFollowsListView
+    PublicationLikeView, UserSubscribeView, UserFollowersListView, UserFollowsListView, CommentsView, \
+    CommentsDetailView, UserSearchView
 
 urlpatterns = [
     path('auth/registration/', CustomRegisterView.as_view(), name='custom_rest_register'),
@@ -18,10 +19,13 @@ urlpatterns = [
     path('users/<str:username>/subscribe/', UserSubscribeView.as_view(), name='subscribe_user'),
     path('users/<str:username>/followers/', UserFollowersListView.as_view(), name='followers_list'),
     path('users/<str:username>/follows/', UserFollowsListView.as_view(), name='follows_list'),
-    # path('users/search/<str:search>/'),
 
     path('publications/', PublicationView.as_view(), name='publications'),
     path('publications/<int:publication_pk>/', PublicationDetailView.as_view(), name='publication_detail'),
-    path('publications/<int:publication_pk>/like', PublicationLikeView.as_view(), name='like_publication')
+    path('publications/<int:publication_pk>/like', PublicationLikeView.as_view(), name='like_publication'),
+    path('publications/<int:publication_pk>/comments/', CommentsView.as_view(), name='publication_comments'),
 
+    path('comments/<int:comment_pk>/', CommentsDetailView.as_view(), name='comment_detail'),
+
+    path('users/search/<str:search>/', UserSearchView.as_view(), name='user_search'),
 ]
