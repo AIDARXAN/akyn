@@ -186,3 +186,19 @@ class ImageSerializer(serializers.ModelSerializer):
         instance.avatar = validated_data.get('avatar')
         instance.save()
         return instance
+
+
+class UserFollowersListSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+
+    def get_is_subscribed(self, obj):
+        request = self.context.get('request')
+        is_following = Follow.objects.filter(user__pk=obj.pk, subscriber__pk=request.user.pk).exists()
+        return is_following
+
+    class Meta:
+        model = User
+        fields = [
+            'id', 'username', 'first_name',
+            'last_name', 'avatar', 'is_subscribed'
+        ]
