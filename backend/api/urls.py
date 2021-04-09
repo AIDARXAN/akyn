@@ -2,7 +2,7 @@ from django.urls import path
 
 from api.api_views.password_reset import PasswordResetView, PasswordResetConfirmView
 from api.views import CustomRegisterView, ProfileView, ProfileViewForThirdUser, PublicationDetailView, PublicationView, \
-    PublicationLikeView, UserSubscribeView
+    PublicationLikeView, UserSubscribeView, UserFollowersListView, UserFollowsListView
 
 urlpatterns = [
     path('auth/registration/', CustomRegisterView.as_view(), name='custom_rest_register'),
@@ -16,6 +16,8 @@ urlpatterns = [
     path('users/current/', ProfileView.as_view(), name='user_profile'),
     path('users/<str:username>/', ProfileViewForThirdUser.as_view(), name='profile_view_for_third_party'),
     path('users/<str:username>/subscribe/', UserSubscribeView.as_view(), name='subscribe_user'),
+    path('users/<str:username>/followers/', UserFollowersListView.as_view(), name='followers_list'),
+    path('users/<str:username>/follows/', UserFollowsListView.as_view(), name='follows_list'),
     # path('users/search/<str:search>/'),
 
     path('publications/', PublicationView.as_view(), name='publications'),
