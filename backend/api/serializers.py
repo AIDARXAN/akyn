@@ -9,7 +9,7 @@ from rest_auth.serializers import LoginSerializer, TokenSerializer as BuiltInTok
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from api.models import User, Publication, Follow
+from api.models import User, Publication, Follow, Comment
 
 
 class CustomLoginSerializer(LoginSerializer):
@@ -201,4 +201,31 @@ class UserFollowersListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'username', 'first_name',
             'last_name', 'avatar', 'is_subscribed'
+        ]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserInfoSerializer(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    changed = serializers.BooleanField(read_only=True)
+    is_owner = serializers.SerializerMethodField()
+
+    def get_is_owner(self, obj):
+        user = self.context.get('user')
+        if obj.user == user:
+            return True
+        return False
+
+    class Meta:
+        model = Comment
+        fields = [
+            'id', 'user', 'description', 'created_at', 'changed', 'is_owner'
+        ]
+
+
+class CommentPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            'id', 'description'
         ]
