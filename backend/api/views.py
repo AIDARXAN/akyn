@@ -9,6 +9,7 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api.choices import PUBLISHED
 from api.drf_yasg_responses import success_response_ok, bad_request_response, not_found_response, created_response, no_content_response
 from api.models import User, Publication, Follow, Comment
 from api.serializers import RegisterSerializer, UserSerializer, ImageSerializer, ProfileThirdUserSerializer, \
@@ -315,3 +316,17 @@ class UserSearchView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class FeedView(APIView):
+    serializer = PublicationSerializer
+
+    @swagger_auto_schema(
+        operation_description="Get user subscribed publications",
+        responses={status.HTTP_200_OK: success_response_ok(serializer)}
+    )
+    def get(self, request):
+        follows = Follow.objects.filter(subscriber__pk=request.user.pk).values_list('user__pk', flat=True)
+        publications = Publication.objects.filter(user__pk__in=follows, status=PUBLISHED)
+        serializer = self.serializer(publications, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
