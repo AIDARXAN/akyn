@@ -3,7 +3,7 @@ from django.urls import path
 from api.api_views.password_reset import PasswordResetView, PasswordResetConfirmView
 from api.views import CustomRegisterView, ProfileView, ProfileViewForThirdUser, PublicationDetailView, PublicationView, \
     PublicationLikeView, UserSubscribeView, UserFollowersListView, UserFollowsListView, CommentsView, \
-    CommentsDetailView, UserSearchView
+    CommentsDetailView, UserSearchView, FeedView
 
 urlpatterns = [
     path('auth/registration/', CustomRegisterView.as_view(), name='custom_rest_register'),
@@ -28,4 +28,6 @@ urlpatterns = [
     path('comments/<int:comment_pk>/', CommentsDetailView.as_view(), name='comment_detail'),
 
     path('users/search/<str:search>/', UserSearchView.as_view(), name='user_search'),
+
+    path('feed/', FeedView.as_view(), name='feed')
 ]
