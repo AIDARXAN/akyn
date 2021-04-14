@@ -27,15 +27,11 @@ class Footer extends React.Component {
     render() {
         return (
             <footer
-                className={"footer" + (this.props.default ? " footer-default" : "")}
+                style={{backgroundColor: "#f4f3ef"}}
             >
                 <Row style={{margin: "0"}}>
-                    <div className="credits ml-auto">
-                        <div className="copyright">
-                            &copy; {new Date().getFullYear()}
-                            , made with{" "}
-                            <i className="fa fa-heart heart" style={{color: "#66615B"}}/>
-                        </div>
+                    <div className="credits m-auto">
+                        <p></p>
                     </div>
                 </Row>
             </footer>
