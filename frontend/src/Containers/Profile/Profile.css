@@ -50,3 +50,21 @@
         transform: translate3d(4px, 0, 0);
     }
 }
+
+.profile-avatar {
+	padding-top: 100px;
+	margin: auto;
+	left: 0px;
+}
+
+.profile-text {
+	padding-top: 100px;
+	margin: auto;
+}
+
+.profile-edit-icon {
+	padding-top: 100px;
+	margin: auto;
+	font-size: 24px;
+	cursor: pointer;
+}
