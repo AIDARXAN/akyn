@@ -116,7 +116,7 @@ export const editUserProfilePassword = (password, closeModal) => async (dispatch
 
 export const editUserAvatar = avatar => async (dispatch, getState) => {
     try {
-        await axiosApi.put("v1/auth/users/avatar", avatar);
+        await axiosApi.patch("v1/users/avatar/", avatar);
 
         await dispatch(editUserProfileAvatarRes());
         dispatch(push("/profile"));
