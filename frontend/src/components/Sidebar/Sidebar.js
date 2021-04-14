@@ -57,13 +57,12 @@ class Sidebar extends React.Component {
                     </div>
                 </div>
                 <div className='sidebar-wrapper' ref={this.sidebar}>
-                    {this.props.user && this.props.user.groups && <Nav>
+                    {this.props.user && <Nav>
                         {this.props.routes.map((route, key) => {
 
                             if (
                                 route.isVisible !== false &&
                                 (
-
                                     (typeof route.groups === "object" && route.groups.find(role => role === this.props.user.groups[0]?.name) ||
                                         route.groups) && !!(route.status && route.status.find(s => s === this.props.user.status)) || !route.status
                                 )
