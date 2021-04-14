@@ -15,7 +15,7 @@
     top: 0;
     height: 100%;
     bottom: 0;
-    width: 560px;
+    width: 260px;
     left: 0;
     z-index: 1030;
     border-right: 1px solid #ddd;
@@ -301,7 +301,7 @@
     @include transition (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
 
     > .content{
-        padding: 0 30px 30px;
+        padding: 0 23.5% 40.4%;
         min-height: calc(100vh - 123px);
         margin-top: 93px;
     }
