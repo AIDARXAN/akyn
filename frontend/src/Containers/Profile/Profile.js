@@ -18,7 +18,7 @@ import {useParams} from "react-router-dom";
 const Profile = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.currentUser);
-    let { edit } = useParams();
+    let {edit} = useParams();
     const [modal, setModal] = useState(false);
     const toggleModal = () => setModal(!modal);
 
@@ -30,44 +30,37 @@ const Profile = () => {
     }, []);
 
     useEffect(() => {
-        if(edit && !user.birth_date ) setModal(!modal);
+        if (edit && !user.birth_date) setModal(!modal);
     }, [edit]);
 
 
     const submitNewUserAvatarHandler = async e => {
         const user = {...user, avatar: e.target.files[0]};
-		const data = new FormData();
+        const data = new FormData();
 
-		Object.keys(user).forEach(value => {
-			if (value === "avatar") {
-				data.append(value, user[value]);
-			}
-		});
+        Object.keys(user).forEach(value => {
+            if (value === "avatar") {
+                data.append(value, user[value]);
+            }
+        });
 
-		await dispatch(editUserAvatar(data));
-	};
+        await dispatch(editUserAvatar(data));
+    };
 
     return !user ? "No data" : (
         <>
             <div className="content">
-                <Row>
-                    <Col md="4">
-                        <Card className="card-user" style={{maxWidth: "600px", minWidth: "350px"}}>
-                            <div className="image">
-                                <img
-                                    alt="background"
-                                    src={require("assets/img/background_profile.jpg")}
-                                />
-                            </div>
+                <Card className="card-user" style={{width: "600px", minWidth: "350px"}}>
 
-                            <CardBody>
-                                <div className="author">
+                    <CardBody>
+                    <div className="author row">
+                        <div className={'profile-avatar col-3'}>
                                     <span className="position-relative">
                                         <img
-                                        alt="..."
-                                        className="avatar border-gray "
-                                        src={user.avatar ? apiURL.urlsAvatar + user.avatar : require("assets/img/cat.jpeg")}
-                                    />
+                                            alt="..."
+                                            className="avatar border-gray "
+                                            src={user.avatar ? user.avatar : require("assets/img/cat.jpeg")}
+                                        />
                                     <div className='position-absolute' style={{right: "0", top: "20px"}}>
                                         <input
                                             type="file"
@@ -80,8 +73,13 @@ const Profile = () => {
                                             id="photo-icon-btn"
                                             className="photo-icon-btn"
                                         >
-                                            <label htmlFor="upload-avatar" className="p-1 m-0" style={{cursor: "pointer", background: "#00b0ba", borderRadius: "100%"}}>
-                                                <i className='nc-icon nc-camera-compact m-0 p-0' style={{color: "#fff"}}/>
+                                            <label htmlFor="upload-avatar" className="p-1 m-0" style={{
+                                                cursor: "pointer",
+                                                background: "#00b0ba",
+                                                borderRadius: "100%"
+                                            }}>
+                                                <i className='nc-icon nc-camera-compact m-0 p-0'
+                                                   style={{color: "#fff"}}/>
                                             </label>
                                             <Tooltip
                                                 style={{background: "#f6f6f6", color: "#0b0b0b"}}
@@ -97,34 +95,47 @@ const Profile = () => {
 
                                     </div>
                                     </span>
-                                    <div>
-                                        <h5 className="title d-inline-block">логин: {user.username}</h5>
-                                    </div>
+                        </div>
 
-                                    <p className="description font-weight-bold">{user.first_name} {user.last_name}</p>
-                                    <button
-                                        className="edit-btn"
-                                        id="edit-profile-btn"
-                                        onClick={toggleModal}
-                                    >
-                                        Редактировать профиль
-                                    </button>
-                                </div>
-                            </CardBody>
+                        <div className="profile-text col-7">
+                            <h5 className="title d-inline-block">{user.first_name} {user.last_name}</h5>
 
-                            <CardFooter>
-                                {user.birth_date  && <hr/>}
+                            <div className="row font-weight-bold">
+                                <p className="m-auto">Жазычуулары: {user.followers}</p>
+                                <p className="m-auto">Жазылган: {user.follows}</p>
+                            </div>
+                        </div>
+                        <div
+                            className="profile-edit-icon col-2"
+                            id="edit-profile-btn"
+                            onClick={toggleModal}
+                        >
+                            <i className="nc-icon nc-settings-gear-65"/>
+                        </div>
+                    </div>
 
-                                {user.birth_date &&
-                                <p className="description text-center">
-                                    <strong>День рождения: {moment(user.birth_date).format("DD.MM.YYYY")}</strong>
-                                </p>}
-                                <hr/>
+                    <div className="">
 
-                            </CardFooter>
-                        </Card>
-                    </Col>
-                </Row>
+
+
+                        <p className="description font-weight-bold">Логин: @{user.username}</p>
+                        <p className="description font-weight-bold">{user.email}</p>
+                        <p className="description font-weight-bold">Катталды: {moment(user.registration_date).format("DD.MM.YYYY")}</p>
+                        </div>
+                    </CardBody>
+
+                    {/*<CardFooter>*/}
+                    {user.birth_date && <hr/>}
+
+                    {user.birth_date &&
+                    <p className="description text-center">
+                        <strong>День рождения: {moment(user.birth_date).format("DD.MM.YYYY")}</strong>
+                    </p>}
+
+                    {/*</CardFooter>*/}
+                </Card>
+                {/*    </Col>*/}
+                {/*</Row>*/}
             </div>
 
 
