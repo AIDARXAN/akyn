@@ -91,7 +91,7 @@ export const editProfile = (profileData, closeModal) => async (dispatch, getStat
     try {
         const userId = getState().user.currentUser.id;
 
-        await axiosApi.put(`v1/auth/users/${userId}`, profileData);
+        await axiosApi.put(`v1/users/current/`, profileData);
 
         dispatch(editProfileRes());
         dispatch(push("/profile"));
@@ -105,7 +105,7 @@ export const editProfile = (profileData, closeModal) => async (dispatch, getStat
 export const editUserProfilePassword = (password, closeModal) => async (dispatch, getState) => {
     try {
         const userId = getState().user.currentUser.id;
-        await axiosApi.put(`v1/auth/users/${userId}/change-password`, password);
+        await axiosApi.put(`v1/users/current/change-password/`, password);
         dispatch(editUserProfilePasswordRes());
         dispatch(openSuccessAlert());
         closeModal();
