@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import gettext_lazy as _
 from django.db import IntegrityError
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -15,7 +17,7 @@ from api.drf_yasg_responses import success_response_ok, bad_request_response, no
 from api.models import User, Publication, Follow, Comment
 from api.serializers import RegisterSerializer, UserSerializer, ImageSerializer, ProfileThirdUserSerializer, \
     PublicationSerializer, PublicationEditSerializer, UserFollowersListSerializer, CommentSerializer, \
-    CommentPostSerializer, UserInfoSerializer
+    CommentPostSerializer, UserInfoSerializer, EditUserSerializer, ChangePasswordSerializer
 
 
 class CustomRegisterView(RegisterView):
@@ -87,7 +89,7 @@ class ProfileView(APIView):
     )
     def put(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
-        serializer = self.serializer(data=request.data)
+        serializer = EditUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
         user.update_profile(validated_data)
@@ -330,3 +332,40 @@ class FeedView(APIView):
         publications = Publication.objects.filter(user__pk__in=follows, status=PUBLISHED)
         serializer = self.serializer(publications, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UpdatePassword(APIView):
+    """
+    An endpoint for changing password.
+    """
+    new_password1 = openapi.Parameter('new_password1', openapi.IN_QUERY, description='Enter a new password',
+                                      type=openapi.TYPE_STRING, )
+    new_password2 = openapi.Parameter('new_password2', openapi.IN_QUERY, description='Confirm new password',
+                                      type=openapi.TYPE_STRING, )
+    old_password = openapi.Parameter('old_password', openapi.IN_QUERY, description='Enter a old password',
+                                     type=openapi.TYPE_STRING, )
+    user_id = openapi.Parameter('user_id', openapi.IN_QUERY, description='User primary key required',
+                                type=openapi.TYPE_STRING)
+
+    no_content = openapi.Response(description="No_content")
+    bed_request = openapi.Response(description='No_content')
+    not_found = openapi.Response(description='Not Found')
+    forbidden = openapi.Response(description='You don\'t have access')
+
+    @swagger_auto_schema(
+        operation_description="An endpoint for changing password.",
+        responses={status.HTTP_204_NO_CONTENT: no_content,
+                   status.HTTP_400_BAD_REQUEST: bed_request,
+                   status.HTTP_404_NOT_FOUND: not_found,
+                   status.HTTP_403_FORBIDDEN: forbidden},
+        manual_parameters=[new_password1, new_password2, old_password, user_id]
+    )
+    def put(self, request, *args, **kwargs):
+        try:
+            self.object = User.objects.get(pk=request.user.pk)
+        except ObjectDoesNotExist:
+            return Response(_("Not found"), status=status.HTTP_404_NOT_FOUND)
+        serializer = ChangePasswordSerializer(data=request.data, context={'user': self.object, 'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
