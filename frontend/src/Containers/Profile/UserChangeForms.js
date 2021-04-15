@@ -19,18 +19,16 @@ const UserChangeForms = props => {
     const toggleModal = () => setModal(!modal);
 
     const regex = {
+        username: /^[a-zA-Z0-9_.-]*$/,
         email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        phoneMask: /\+\(996\)[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{2}$/,
-        phone: /[0-9]{12}/,
-        birth_date: /[0-9]{4}-[0-9]{2}-[0-9]{2}/
     };
 
     const [user, setUser] = useState({
         email: props.userInfo.email,
-        phone: props.userInfo.phone,
         first_name: props.userInfo.first_name,
         last_name: props.userInfo.last_name,
-        birth_date: props.userInfo.birth_date ? new Date(props.userInfo.birth_date) : minimumAcceptableBirthDayDate
+        username: props.userInfo.username,
+
     });
 
     const changeHandler = e => {
@@ -45,16 +43,12 @@ const UserChangeForms = props => {
 
     const changeUserSubmit = e => {
         e.preventDefault();
-        const userInfo = {...user, birth_date: moment(user.birth_date).format("yyyy-MM-DD")};
-        userInfo.phone = userInfo.phone.replace(/[+()-]/ig, "");
-
+        const userInfo = {...user};
         dispatch(editProfile(userInfo, props.closeModal));
     };
 
     const submitDisabled = !!Object.keys(user).find(e => user[e] === "") ||
-        !regex.email.test(user.email) ||
-        (!regex.phone.test(user.phone) &&
-            !regex.phoneMask.test(user.phone));
+        !regex.email.test(user.email)
     return (
         <div>
             <div
@@ -65,42 +59,43 @@ const UserChangeForms = props => {
                     padding: "15px",
                     borderBottom: "1px solid black",
                     borderColor: "#ccc"
-                }}><b>РЕДАКТИРОВАТЬ ПРОФИЛЬ</b></div>
+                }}><b>Жеке баракчаны өзгөртүү</b></div>
             <form style={{padding: "20px 15px 10px 15px"}}>
+
+                <FormElement
+                    focus
+                    valid={regex.username.test(user.username)}
+                    invalidText={"Логин англис тамгалары менен жазылыш керек"}
+                    name='username'
+                    placeholder='Логин'
+                    alignPlaceholder='center'
+                    changeHandler={changeHandler}
+                    value={user.username}
+                    placeholderOver
+                    tooltip={"Логин англис тамгалыры менен жазылат, башкача аттары username, login"}
+                />
+
                 <FormElement
                     focus
                     valid={regex.email.test(user.email)}
-                    invalidText={"Адрес электронной почты должен быть введен на латинице, содержать символ @ и часть адреса после него"}
+                    invalidText={"Электрондук почтанын адреси латын менен жазылыш керек"}
                     name='email'
-                    placeholder='Email'
+                    placeholder='Электрондук почта'
                     alignPlaceholder='center'
                     changeHandler={changeHandler}
                     value={user.email}
                     placeholderOver
-                    tooltip={"Email должен быть введен латинскими буквами и содержать символ \"@\""}
-                />
-
-                <FormElement
-                    valid={regex.phone.test(user.phone) || regex.phoneMask.test(user.phone)}
-                    invalidText={"Телефон должен быть указан в формате +(996)ххх-хх-хх-хх"}
-                    name='phone'
-                    mask="+(\9\96)999-99-99-99"
-                    placeholder='Телефон'
-                    alignPlaceholder='center'
-                    changeHandler={changePhone}
-                    value={user.phone}
-                    tooltip="Телефонный номер должен содержать только цифры"
-                    placeholderOver
+                    tooltip={"Электрондук почтанын адреси латын менен жазылыш керек жана @ белгиси камтылыш керек"}
                 />
 
                 <FormElement
                     valid={user.first_name.length >= 3}
                     name='first_name'
-                    placeholder='Имя'
+                    placeholder='Ат'
                     alignPlaceholder='center'
                     changeHandler={onlyRussian}
                     value={user.first_name}
-                    tooltip="Введите имя, используя только кириллицу"
+                    tooltip="Кыргыз тилинде атыңызды жазып коюңуз"
                     placeholderOver
                 />
 
@@ -111,22 +106,8 @@ const UserChangeForms = props => {
                     alignPlaceholder='center'
                     changeHandler={onlyRussian}
                     value={user.last_name}
-                    tooltip="Введите фамилию, используя только кириллицу"
+                    tooltip="Кыргыз тилинде фамилияңызды жазып коюңуз"
                     placeholderOver
-                />
-
-                <FormElement
-                    id='date-birthday'
-                    datepicker
-                    formatDate='dd.MM.yyyy'
-                    name='birth_date'
-                    placeholder='Дата рождения'
-                    alignPlaceholder='center'
-                    changeHandler={changeBirth}
-                    value={user.birth_date}
-                    tooltip="Выберите дату вашего рождения"
-                    placeholderOver
-                    className={props.animate ?"animate-input":""}
                 />
             </form>
 
@@ -135,7 +116,7 @@ const UserChangeForms = props => {
                 <>{
                     typeof error === "object" || typeof error === "string" ?
                         <ErrorAlert error={error}/> :
-                        <Alert color="danger">Something error</Alert>
+                        <Alert color="danger">Серверден ката чыкты</Alert>
                 }</>
                 }
             </div>
@@ -145,7 +126,7 @@ const UserChangeForms = props => {
                 id="edit-password-btn"
                 onClick={toggleModal}
             >
-                Изменить пароль
+                Купуя сөздү өзгөртүү
             </button>
 
             <div style={{
@@ -155,7 +136,7 @@ const UserChangeForms = props => {
                 borderTop: "1px solid black",
                 borderColor: "#ccc"
             }}>
-                <Button onClick={props.closeModal}>Отмена</Button> {" "}
+                <Button onClick={props.closeModal}>Жокко чыгаруу</Button> {" "}
                 <Button
                     id='registrationSubmit'
                     disabled={
@@ -165,7 +146,7 @@ const UserChangeForms = props => {
                     className={`${!submitDisabled ? "bg-info" : "bg-secondary"}`}
                     onClick={changeUserSubmit}
                 >
-                    Сохранить</Button>
+                    Сактоо</Button>
             </div>
 
             <Modal
@@ -175,7 +156,6 @@ const UserChangeForms = props => {
             >
                 <PasswordChangeForms
                     closeModal={toggleModal}
-                    userInfo={user}
                 />
             </Modal>
         </div>

@@ -67,13 +67,13 @@ const Registration = () => {
                     <FormElement
                         focus
                         valid={regex.username.test(user.username)}
-                        invalidText={"Колдонуучунун аты англис тамгалары менен жазылыш керек"}
+                        invalidText={"Логин англис тамгалары менен жазылыш керек"}
                         name='username'
-                        placeholder='Колдонуучунун аты'
+                        placeholder='Логин'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.username}
-                        tooltip={"Колдонуучунун аты англис тамгалыры менен жазылат, башкача аттары username, login"}
+                        tooltip={"Логин англис тамгалыры менен жазылат, башкача аттары username, login"}
                     />
 
                     <FormElement
@@ -91,25 +91,25 @@ const Registration = () => {
                     <FormElement
                         password
                         valid={user.password1.length >= 5}
-                        invalidText={"Парол 5 белгиден аз болбош керек"}
+                        invalidText={"Купуя сөз 5 белгиден аз болбош керек"}
                         name='password1'
-                        placeholder='Парол'
+                        placeholder='Купуя сөз'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.password1}
-                        tooltip="Парол 5 белгиден аз болбош керек"
+                        tooltip="Купуя сөз 5 белгиден аз болбош керек"
                     />
 
                     <FormElement
                         password
                         valid={user.password1 === user.password2 && user.password1.length >= 5}
-                        invalidText={"Парол өйдөңду жазылган паролго окшош эмес"}
+                        invalidText={"Ырастоо купуя сөзү өйдөңкү жазылган купуя сөз окшош эмес"}
                         name='password2'
-                        placeholder='Паролду кайталаңыз'
+                        placeholder='Купуя сөздү кайталаңыз'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.password2}
-                        tooltip="Паролду кайталаңыз"
+                        tooltip="Купуя сөздү кайталаңыз"
                     />
 
                     <FormElement
@@ -125,11 +125,11 @@ const Registration = () => {
                     <FormElement
                         valid={user.last_name.length >= 3}
                         name='last_name'
-                        placeholder='Теги'
+                        placeholder='Фамилия'
                         alignPlaceholder='center'
                         changeHandler={onlyRussian}
                         value={user.last_name}
-                        tooltip="Кыргыз тилинде тегиңизди жазып коюңуз"
+                        tooltip="Кыргыз тилинде фамилияңызды жазып коюңуз"
                     />
 
                     {error &&
@@ -141,7 +141,6 @@ const Registration = () => {
                     }
 
                     <Button
-                        //                        28a745
                         id='registrationSubmit'
                         disabled={
                             submitDisabled

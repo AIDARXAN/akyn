@@ -31,7 +31,7 @@ const SuccessAlert = () => {
                    toggle={hiddenAlert}
                    id='success-alert'
             >
-                Успех!
+                Ийгилик!
             </Alert>
         </div>
     );
