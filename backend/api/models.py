@@ -43,7 +43,6 @@ class User(AbstractUser):
         self.email = data.get('email')
         self.first_name = data.get('first_name')
         self.last_name = data.get('last_name')
-        self.birth_date = data.get('birthdate')
         self.save()
 
 
