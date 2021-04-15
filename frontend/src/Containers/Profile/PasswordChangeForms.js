@@ -50,36 +50,36 @@ const PasswordChangeForms = props => {
                 padding: "15px",
                 borderBottom: "1px solid black",
                 borderColor: "#ccc"
-            }}><b>ИЗМЕНИТЬ ПАРОЛЬ</b></div>
+            }}><b>КУПУЯ СӨЗДҮ АЛМАШТЫРУУ</b></div>
             <form style={{padding: "20px 15px 10px 15px"}}>
                 <FormElement
                     focus
                     password
                     name='old_password'
-                    placeholder='Старый пароль'
+                    placeholder='Эски купуя сөз'
                     alignPlaceholder='center'
                     changeHandler={changeHandler}
                     value={password.old_password}
                     placeholderOver
-                    tooltip={"Введите ваш старый пароль"}
+                    tooltip={"Эски купуя сөздү жазыңыз"}
                 />
 
                 <FormElement
                     password
                     valid={password.password1.length >= 5 && error === undefined}
                     name='password1'
-                    placeholder='Новый пароль'
+                    placeholder='Жаңы купуя сөз'
                     alignPlaceholder='center'
                     changeHandler={changeHandler}
                     value={password.password1}
                     placeholderOver
-                    tooltip={"Пароль должен содержать не менее 5 символов"}
+                    tooltip={"Купуя сөз 5 белгиден аз болбош керек"}
                 />
                 {
                     !password.password1.length >= 5 && <span style={{
                         fontSize: "13px",
                         color: "#DC3556"
-                    }}>Пароль не может быть короче 5 символов</span>
+                    }}>Купуя сөз 5 белгиден аз болбош керек</span>
                 }
                 {
                     error && <span style={{
@@ -92,14 +92,14 @@ const PasswordChangeForms = props => {
                 <FormElement
                     password
                     valid={password.password1 === password.password2 && password.password1.length >= 5}
-                    invalidText={"Пароль не соответствует введенному выше"}
+                    invalidText={"Ырастоо купуя сөзү өйдөңкү жазылган купуя сөз окшош эмес"}
                     name='password2'
-                    placeholder='Повторите новый пароль'
+                    placeholder='Жаңы купуя сөздү кайталаңыз'
                     alignPlaceholder='center'
                     changeHandler={changeHandler}
                     value={password.password2}
                     placeholderOver
-                    tooltip={"Повторите новый пароль"}
+                    tooltip={"Купуя сөздү кайталаңыз"}
                 />
 
             </form>
@@ -111,7 +111,7 @@ const PasswordChangeForms = props => {
                 borderTop: "1px solid black",
                 borderColor: "#ccc"
             }}>
-                <Button onClick={props.closeModal}>Отмена</Button> {" "}
+                <Button onClick={props.closeModal}>Жокко чыгаруу</Button> {" "}
                 <Button
                     id='registrationSubmit'
                     disabled={
@@ -121,7 +121,7 @@ const PasswordChangeForms = props => {
                     className={`${!submitDisabled ? "bg-info" : "bg-secondary"}`}
                     onClick={changeUserSubmit}
                 >
-                    Сохранить</Button>
+                    Сактоо</Button>
             </div>
         </div>
     );

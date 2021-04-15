@@ -61,7 +61,7 @@ const PasswordReset = () => {
                             style={{opacity: submitDisabled && "0.4"}}
                             className={`w-100 ${!submitDisabled ? "bg-info" : "bg-secondary"}`}
                         >
-                            Парол жаңыртуу
+                            Купуя сөздү жаңыртуу
                         </Button>
                     </form>
                 </CardBody>

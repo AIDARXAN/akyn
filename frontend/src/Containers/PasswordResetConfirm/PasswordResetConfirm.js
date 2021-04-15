@@ -50,32 +50,32 @@ const PasswordResetConfirm = () => {
                     <FormElement
                         password
                         valid={password.new_password1.length >= 5}
-                        invalidText={"Пароль не может быть короче 5 символов"}
+                        invalidText={"Купуя сөз 5 белгиден аз болбош керек"}
                         name='new_password1'
-                        placeholder='Пароль'
+                        placeholder='Купуя сөз'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={password.new_password1}
-                        tooltip="Пароль должен содержать не меньше 5 символов"
+                        tooltip="Купуя сөз 5 белгиден аз болбош керек"
                     />
 
                     <FormElement
                         password
                         valid={password.new_password1 === password.new_password2 && password.new_password1.length >= 5}
-                        invalidText={"Пароль не соответствует введенному выше"}
+                        invalidText={"Ырастоо купуя сөзү өйдөңкү жазылган купуя сөз окшош эмес"}
                         name='new_password2'
-                        placeholder='Повторите пароль'
+                        placeholder='Купуя сөздү кайталаңыз'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={password.new_password2}
-                        tooltip="Повторите введенный пароль"
+                        tooltip="Купуя сөздү кайталаңыз"
                     />
 
                     {error &&
                     <>{
                         typeof error === "object" ?
                             <ErrorAlert error={error}/> :
-                            <Alert color="danger">Something error</Alert>
+                            <Alert color="danger">Серверден ката чыкты</Alert>
                     }</>
                     }
 
@@ -89,11 +89,11 @@ const PasswordResetConfirm = () => {
                         style={{opacity: submitDisabled && "0.4"}}
                         className={`w-100 ${!submitDisabled ? "bg-info" : "bg-secondary"}`}
                     >
-                        Сбросить пароль</Button>
+                        Купуя сөздү жаңыртуу</Button>
                 </form>
             </CardBody>
             <CardFooter className='border-top text-center p-3' style={{background: "#f6f6f6"}}>
-                <NavLink to='/login' style={{fontSize: "16px"}}>Назад</NavLink>
+                <NavLink to='/login' style={{fontSize: "16px"}}>Артка</NavLink>
             </CardFooter>
         </Card>
     );

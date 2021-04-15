@@ -36,7 +36,7 @@ const Login = () => {
                 <form onSubmit={submitLogin}>
                     <FormElement
                         name='username'
-                        placeholder='Колдонуучунун аты'
+                        placeholder='Логин'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.email}
@@ -45,13 +45,13 @@ const Login = () => {
                     <FormElement
                         password
                         name='password'
-                        placeholder='Пароль'
+                        placeholder='Купуя сөз'
                         alignPlaceholder='center'
                         changeHandler={changeHandler}
                         value={user.password}
                     />
 
-                    {error && <Alert color="danger">Туура эмес логин же парол жаздыңыз.</Alert>}
+                    {error && <Alert color="danger">Туура эмес логин же купуя сөз жаздыңыз.</Alert>}
 
                     <Button
                         id='loginSubmit'
@@ -68,7 +68,7 @@ const Login = () => {
             <CardFooter className='border-top text-center p-3' style={{background: "#f6f6f6"}}>
                 <NavLink id='toRegistration' to='/registration' style={{fontSize: "16px"}}>Каттоо</NavLink>
                 <br/>
-                <NavLink id='toReset' to='/reset-password' style={{fontSize: "16px"}}>Парол унуттуңузбу?</NavLink>
+                <NavLink id='toReset' to='/reset-password' style={{fontSize: "16px"}}>Купуя сөздү унуттуңузбу?</NavLink>
             </CardFooter>
         </Card>
     );

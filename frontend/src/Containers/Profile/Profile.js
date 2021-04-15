@@ -30,7 +30,7 @@ const Profile = () => {
     }, []);
 
     useEffect(() => {
-        if (edit && !user.birth_date) setModal(!modal);
+        if (edit && !user.registration_date) setModal(!modal);
     }, [edit]);
 
 
@@ -88,8 +88,8 @@ const Profile = () => {
                                                 target="photo-icon-btn"
                                                 toggle={toggleTooltip}
                                             >
-                                                Можно загрузить фото в форматах .jpeg, .jpg, .png и .gif.
-                                                Размер фото не может превышать 10 мб
+                                                Сүрөттөрдү .jpeg, .jpg, .png жана .gif форматтарында гана жүктөсө болот.
+                                                Сурөттүн салмагы 10 мегабайттан ашпаш керек
                                             </Tooltip>
                                         </button>
 
@@ -115,27 +115,12 @@ const Profile = () => {
                     </div>
 
                     <div className="">
-
-
-
                         <p className="description font-weight-bold">Логин: @{user.username}</p>
-                        <p className="description font-weight-bold">{user.email}</p>
+                        <p className="description font-weight-bold">Э-почта: {user.email}</p>
                         <p className="description font-weight-bold">Катталды: {moment(user.registration_date).format("DD.MM.YYYY")}</p>
                         </div>
                     </CardBody>
-
-                    {/*<CardFooter>*/}
-                    {user.birth_date && <hr/>}
-
-                    {user.birth_date &&
-                    <p className="description text-center">
-                        <strong>День рождения: {moment(user.birth_date).format("DD.MM.YYYY")}</strong>
-                    </p>}
-
-                    {/*</CardFooter>*/}
                 </Card>
-                {/*    </Col>*/}
-                {/*</Row>*/}
             </div>
 
 
