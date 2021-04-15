@@ -81,7 +81,7 @@ class PublicationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    publications = PublicationSerializer(many=True)
+    publications = PublicationSerializer(many=True, read_only=True)
     followers = serializers.SerializerMethodField()
     follows = serializers.SerializerMethodField()
 
@@ -101,6 +101,13 @@ class UserSerializer(serializers.ModelSerializer):
             'avatar', 'registration_date', 'publications',
             'followers', 'follows'
         ]
+
+
+class EditUserSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    email = serializers.EmailField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
 
 
 class ProfileThirdUserSerializer(serializers.ModelSerializer):
@@ -229,3 +236,33 @@ class CommentPostSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'description'
         ]
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password1 = serializers.CharField(required=True)
+    new_password2 = serializers.CharField(required=True)
+
+    def validate_old_password(self, value):
+        user = self.context['user']
+        if not user.check_password(value):
+            raise serializers.ValidationError(
+                _('Your old password was entered incorrectly. Please enter it again.')
+            )
+        return value
+
+    def validate(self, data):
+        if data['new_password1'] != data['new_password2']:
+            raise serializers.ValidationError({'new_password2': _("The two password fields didn't match.")})
+        password_validation.validate_password(data['new_password1'], self.context['request'].user)
+        return data
+
+    def save(self, **kwargs):
+        password = self.validated_data['new_password1']
+        user = self.context['user']
+        user.set_password(password)
+        user.save()
+        return user
