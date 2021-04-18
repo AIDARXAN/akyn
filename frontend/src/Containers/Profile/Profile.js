@@ -14,6 +14,7 @@ import UserChangeForms from "./UserChangeForms";
 import Tooltip from "reactstrap/es/Tooltip";
 import {apiURL} from "../../configAPI";
 import {useParams} from "react-router-dom";
+import Post from "../../components/Post/Post";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -47,10 +48,11 @@ const Profile = () => {
         await dispatch(editUserAvatar(data));
     };
 
+
     return !user ? "No data" : (
         <>
             <div className="content">
-                <Card className="card-user" style={{width: "600px", minWidth: "350px"}}>
+                <Card className="card-user" style={{width: "600px"}}>
 
                     <CardBody>
                     <div className="author row">
@@ -121,6 +123,11 @@ const Profile = () => {
                         </div>
                     </CardBody>
                 </Card>
+                {user.publications && user.publications.map((publication, index) => {
+                    return (
+                        <Post post={publication}/>
+                    )
+                })}
             </div>
 
 
