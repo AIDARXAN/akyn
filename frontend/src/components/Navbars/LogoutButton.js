@@ -12,7 +12,7 @@ const LogoutButton = ({color}) => {
             style={{color: color, fontSize: "14px"}}
             onClick={() => dispatch(userLogout())}
         >
-            Выйти
+            Чыгуу
         </a>
     );
 };
