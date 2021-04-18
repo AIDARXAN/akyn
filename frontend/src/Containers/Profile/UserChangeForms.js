@@ -9,7 +9,6 @@ import PasswordChangeForms from "./PasswordChangeForms";
 import "react-datepicker/dist/react-datepicker.css";
 import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
 import Alert from "reactstrap/es/Alert";
-import {minimumAcceptableBirthDayDate} from "../../constants";
 
 const UserChangeForms = props => {
     const dispatch = useDispatch();
