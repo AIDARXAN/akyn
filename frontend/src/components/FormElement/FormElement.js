@@ -11,7 +11,6 @@ import MaskedTextInput from "react-text-mask";
 import "./tooltipArrowFix.css";
 import FormFeedback from "reactstrap/es/FormFeedback";
 import DatePicker from "react-datepicker";
-import {minimumAcceptableBirthDayDate} from "../../constants";
 
 const FormElement = (
     {
@@ -86,7 +85,6 @@ const FormElement = (
 
         <DatePicker
             id={id}
-            maxDate={minimumAcceptableBirthDayDate}
             selected={value}
             onChange={changeHandler}
             dateFormat={formatDate}

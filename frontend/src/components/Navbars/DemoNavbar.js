@@ -10,15 +10,9 @@ import PropTypes from "prop-types";
 import RegistrationNotification from "../Alerts/RegistrationNotification";
 import {apiURL} from "../../configAPI";
 import moment from "moment";
-import BindTelegramNotification from "../Alerts/BindTelegramNotification";
-import FillTheWorkDaySheetNotification from "../Alerts/FillTheWorkDaySheetNotification";
-import FillTheMentorWorkDaySheetNotification from "../Alerts/FillTheMentorWorkDaySheetNotification";
 
 const REGISTERED_NOTIFICATION = "RegisteredNotification";
 const BIRTHDAY_NOTIFICATION = "birthday";
-const BIND_TELEGRAM_ID_NOTIFICATION = "BindTelegramNotification";
-const FILL_THE_WORKDAY_SHEET = "fillTheWorkDaySheet";
-const FILL_THE_MENTOR_WORKDAY_SHEET = "fillTheMentorWorkDaySheet"
 
 
 class Header extends React.Component {
@@ -210,41 +204,6 @@ class Header extends React.Component {
                                                     lastName={e.notification.user.last_name}
                                                     id={e.notification.user.id}
                                                 />
-                                                }
-                                                {e.notification.name === BIND_TELEGRAM_ID_NOTIFICATION &&
-                                                <BindTelegramNotification/>
-                                                }
-                                                {e.notification.name === BIRTHDAY_NOTIFICATION &&
-                                                <div style={{
-                                                    color: "#66615b",
-                                                }}>
-                                                    <p id='birthday-notification'>У
-                                                        пользователя <b>"{e?.notification?.user?.last_name + " " + e?.notification?.user?.first_name}"</b> сегодня
-                                                        день рождения.</p>
-                                                </div>
-                                                }
-                                                {e.notification.name === FILL_THE_WORKDAY_SHEET &&
-                                                    <FillTheWorkDaySheetNotification/>
-                                                }
-                                                {e.notification.name === FILL_THE_MENTOR_WORKDAY_SHEET &&
-                                                    <FillTheMentorWorkDaySheetNotification/>
-                                                }
-                                                {e.notification.name === "userDoesNotHaveBirthday" &&
-                                                <NavLink id="not-birthday" to={"/profile/edit"}>
-                                                    <div className="not-birthday">
-                                                        <div>
-                                                            <div className="d-flex justify-content-between">
-                                                                <b style={{
-                                                                    fontSize: "16px",
-                                                                    textTransform: "uppercase"
-                                                                }}>Профиль</b>
-                                                                <p>{moment(e.notification.send_time).format("DD.MM.YYYY")}</p>
-                                                            </div>
-                                                            <p id="not-birthday" style={{whiteSpace: "noWrap"}}>Добавьте
-                                                                дату рождения к профилю</p>
-                                                        </div>
-                                                    </div>
-                                                </NavLink>
                                                 }
                                             </div>
                                         )) : <p id="not-notification" className='p-2'>Билдирүү жок</p>}
