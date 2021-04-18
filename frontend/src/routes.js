@@ -1,11 +1,12 @@
 import {userStatuses} from "./constants";
 import Profile from "./Containers/Profile/Profile";
+import CreatePost from "./Containers/CreatePost/CreatePost";
 
 const routes = [
     {
         id: "profile",
         path: "/profile",
-        name: "Профили",
+        name: "Профиль",
         icon: "nc-icon nc-single-02",
         component: Profile,
     }, {
@@ -15,7 +16,18 @@ const routes = [
         name: "Профиль",
         icon: "nc-icon nc-single-02",
         component: Profile,
-    }, {
+    },
+
+    {
+        id: "create_post",
+        path: "/create-post",
+        name: "Пост чыгаруу",
+        icon: "nc-icon nc-simple-add",
+        component: CreatePost,
+    },
+
+
+    {
         isVisible: false,
         path: "/login",
         component: null
