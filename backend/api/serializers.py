@@ -62,9 +62,17 @@ class PublicationEditSerializer(serializers.ModelSerializer):
 
 class PublicationSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
+    comments = serializers.SerializerMethodField(read_only=True)
     creation_date = serializers.DateTimeField(read_only=True)
     user = UserInfoSerializer(read_only=True, allow_null=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
+    is_owner = serializers.SerializerMethodField(read_only=True)
+
+    def get_is_owner(self, obj):
+        request = self.context.get('request')
+        if obj.user == request.user:
+            return True
+        return False
 
     def get_is_liked(self, obj):
         request = self.context.get('request')
@@ -75,9 +83,13 @@ class PublicationSerializer(serializers.ModelSerializer):
         likes_count = obj.likes.all().count()
         return likes_count
 
+    def get_comments(self, obj):
+        comments_count = obj.comments.all().count()
+        return comments_count
+
     class Meta:
         model = Publication
-        fields = ['id', 'likes', 'description', 'creation_date', 'status', 'user', 'is_liked']
+        fields = ['id', 'likes', 'comments', 'description', 'creation_date', 'status', 'user', 'is_liked', 'is_owner']
 
 
 class UserSerializer(serializers.ModelSerializer):
