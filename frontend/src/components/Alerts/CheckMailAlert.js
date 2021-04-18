@@ -31,7 +31,7 @@ const CheckMailAlert = () => {
                    toggle={hiddenAlert}
                    id='success-alert'
             >
-                Проверьте почту.
+                Почтаңызды текшериңиз
             </Alert>
         </div>
     );
