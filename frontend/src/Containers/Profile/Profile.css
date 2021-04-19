@@ -16,6 +16,24 @@
 	opacity: 1;
 }
 
+.delete-btn {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.35em;
+	text-transform: uppercase;
+	margin: 5px 1px;
+	padding: 0.7vw;
+	border-radius: 3px;
+	transition: all .15s linear;
+	user-select: none;
+	outline: none;
+	background: transparent;
+	border: 2px solid #ba0025 !important;
+	color: #ba0000;
+	opacity: 1;
+}
+
 .photo-icon-btn {
 	font-size: 32px;
 	background: #00b0ba;

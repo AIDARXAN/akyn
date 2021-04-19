@@ -2,13 +2,15 @@ import React, {useState} from "react";
 import FormElement from "../../components/FormElement/FormElement";
 import Button from "reactstrap/es/Button";
 import moment from "moment";
-import {editProfile} from "../../store/acrions/user/actionsCreators";
+import {deleteUser, editProfile} from "../../store/acrions/user/actionsCreators";
 import {useDispatch, useSelector} from "react-redux";
 import Modal from "reactstrap/es/Modal";
 import PasswordChangeForms from "./PasswordChangeForms";
 import "react-datepicker/dist/react-datepicker.css";
 import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
 import Alert from "reactstrap/es/Alert";
+import "./Profile.css"
+import CommonModal from "../../components/Modals/CommonModal";
 
 const UserChangeForms = props => {
     const dispatch = useDispatch();
@@ -16,6 +18,11 @@ const UserChangeForms = props => {
 
     const [modal, setModal] = useState(false);
     const toggleModal = () => setModal(!modal);
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const toggleDeleteModal = () => {
+        setDeleteModal(!deleteModal);
+    }
 
     const regex = {
         username: /^[a-zA-Z0-9_.-]*$/,
@@ -45,6 +52,10 @@ const UserChangeForms = props => {
         const userInfo = {...user};
         dispatch(editProfile(userInfo, props.closeModal));
     };
+
+    const deleteUserSubmit = () => {
+        dispatch(deleteUser());
+    }
 
     const submitDisabled = !!Object.keys(user).find(e => user[e] === "") ||
         !regex.email.test(user.email)
@@ -128,6 +139,14 @@ const UserChangeForms = props => {
                 Купуя сөздү өзгөртүү
             </button>
 
+            <button
+                className="delete-btn ml-3 mb-3"
+                id="edit-password-btn"
+                onDoubleClick={toggleDeleteModal}
+            >
+                Аккаунтту өчүрүү
+            </button>
+
             <div style={{
                 color: "#00b0ba",
                 textAlign: "right",
@@ -157,6 +176,10 @@ const UserChangeForms = props => {
                     closeModal={toggleModal}
                 />
             </Modal>
+
+            <CommonModal isOpen={deleteModal} toggle={toggleDeleteModal} save={'Ооба өчүрүү'} alert={true} cancel={'Жок'} submit={deleteUserSubmit}>
+                Аккаунтту өчүргөндөн кийин сиз аны кайтара албайсыз, сиз аккаунтту өчүргүңүз келип жатабы?
+            </CommonModal>
         </div>
     );
 };

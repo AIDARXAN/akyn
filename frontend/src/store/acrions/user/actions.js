@@ -117,3 +117,9 @@ export const FETCH_WORKDAY_NORM_ERR = "FETCH_WORKDAY_NORM_ERR";
 
 export const fetchWorkDayNormRes = (data) => ({type: FETCH_WORKDAY_NORM_RES, data});
 export const fetchWorkDayNormErr = (error) => ({type: FETCH_WORKDAY_NORM_ERR, error});
+
+export const DELETE_USER_ACCOUNT_RES = "DELETE_USER_ACCOUNT_RES";
+export const DELETE_USER_ACCOUNT_ERR = "DELETE_USER_ACCOUNT_ERR";
+
+export const deleteUserAccountRes = () => ({type: DELETE_USER_ACCOUNT_RES})
+export const deleteUserAccountErr = (error) => ({type: DELETE_USER_ACCOUNT_ERR, error})

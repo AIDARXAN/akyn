@@ -1,6 +1,8 @@
 import {push} from "connected-react-router";
 
 import {
+    deleteUserAccountErr,
+    deleteUserAccountRes,
     editProfileErr,
     editProfileRes,
     editUserClassesAndRightsErr,
@@ -139,5 +141,15 @@ export const editUserClassesAndRights = data => async dispatch => {
         dispatch(openSuccessAlert());
     } catch (e) {
         dispatch(editUserClassesAndRightsErr(e.response.data));
+    }
+};
+
+export const deleteUser = () => async (dispatch, getState) => {
+    try {
+        await axiosApi.delete("v1/users/current/");
+        dispatch(push("/login"));
+        dispatch(deleteUserAccountRes());
+    } catch (e) {
+        dispatch(deleteUserAccountErr(e?.response?.data))
     }
 };

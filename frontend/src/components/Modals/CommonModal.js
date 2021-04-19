@@ -14,7 +14,7 @@ const CommonModal = ({isOpen, title, toggle, children, cancel, save, submit, ale
                 </ModalBody>
 
                 {!withoutClose && <ModalFooter>
-                    {cancel && <Button id={'cancel-button'} color="secondary" onClick={toggle}>Жокко чыгаруу</Button>}
+                    {cancel && <Button id={'cancel-button'} color="secondary" onClick={toggle}>{cancel}</Button>}
                     {save && <Button disabled={isDisabled} onClick={submit} id={saveId ? saveId : 'save-button'}
                                      color={`btn ${alert === true ? 'btn-danger' : 'btn-info'}`}>{save}</Button>}
                 </ModalFooter>}

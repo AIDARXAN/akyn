@@ -234,7 +234,7 @@ class Header extends React.Component {
                                             alt="..."
                                             className="avatar border-gray rounded-circle"
                                             style={{width: "50px", height: "50px"}}
-                                            src={this.props.user.avatar ? apiURL.urlsAvatar + this.props.user.avatar : require("assets/img/cat.jpeg")}
+                                            src={this.props.user.avatar ? this.props.user.avatar : require("assets/img/cat.jpeg")}
                                         />
                                     </span>
                                 </DropdownToggle>
