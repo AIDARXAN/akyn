@@ -1,20 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {editUserAvatar, fetchCurrentUser} from "../../store/acrions/user/actionsCreators";
-import Row from "reactstrap/es/Row";
-import Col from "reactstrap/es/Col";
 import Card from "reactstrap/es/Card";
 import CardBody from "reactstrap/es/CardBody";
-import CardFooter from "reactstrap/es/CardFooter";
 import moment from "moment";
-import {ACTIVE, userAdditionalRolesRus, userRolesRus} from "../../constants";
 import "./Profile.css";
 import Modal from "reactstrap/es/Modal";
 import UserChangeForms from "./UserChangeForms";
 import Tooltip from "reactstrap/es/Tooltip";
-import {apiURL} from "../../configAPI";
 import {useParams} from "react-router-dom";
 import Post from "../../components/Post/Post";
+import {getFollowers, getFollowing} from "../../store/acrions/Follow/actionCreators";
+import Subscriber from "../../components/Subscriber/Subscriber";
+import "../../components/Post/post.css";
+import {subscribe, unsubscribe} from "../../components/Subscriber/subscribe";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -48,7 +47,31 @@ const Profile = () => {
         await dispatch(editUserAvatar(data));
     };
 
+    let followers = useSelector(state => state.follow.followers)
+    let follows = useSelector(state => state.follow.following)
+    const [followersModal, setFollowersModal] = useState(false);
+    const toggleFollowersModal = () => {
+        dispatch(getFollowers(user.username))
+        setFollowersModal(!followersModal)
+    }
 
+    const [followingModal, setFollowingModal] = useState(false);
+    const toggleFollowingModal = () => {
+        dispatch(getFollowing(user.username))
+        setFollowingModal(!followingModal)
+    }
+
+    const subscribeOnUser = (username) => {
+        subscribe(username)
+        dispatch(getFollowing(user.username))
+        dispatch(getFollowers(user.username))
+    }
+
+    const unsubscribeFromUser = (username) => {
+        unsubscribe(username)
+        dispatch(getFollowing(user.username))
+        dispatch(getFollowers(user.username))
+    }
     return !user ? "No data" : (
         <>
             <div className="content">
@@ -103,8 +126,8 @@ const Profile = () => {
                             <h5 className="title d-inline-block">{user.first_name} {user.last_name}</h5>
 
                             <div className="row font-weight-bold">
-                                <p className="m-auto">Жазычуулары: {user.followers}</p>
-                                <p className="m-auto">Жазылган: {user.follows}</p>
+                                <p className="m-auto post-cursor-pointer" onClick={toggleFollowersModal}>Жазычуулары: {user.followers}</p>
+                                <p className="m-auto post-cursor-pointer" onClick={toggleFollowingModal}>Жазылган: {user.follows}</p>
                             </div>
                         </div>
                         <div
@@ -142,6 +165,26 @@ const Profile = () => {
                     animate={edit}
                 />
             </Modal>
+
+            {followers && <Modal isOpen={followersModal} toggle={toggleFollowersModal} centered={true}>
+                <div style={{maxHeight: "600px", overflow: "auto"}}>
+                    {followers?.map((follower, index) => {
+                        return (
+                            <Subscriber user={follower} subscribe={subscribeOnUser} unsubscribe={unsubscribeFromUser}/>
+                        )
+                    })}
+                </div>
+            </Modal> }
+
+            {follows && <Modal isOpen={followingModal} toggle={toggleFollowingModal} centered={true}>
+                <div style={{maxHeight: "600px", overflow: "auto"}}>
+                    {follows?.map((follower, index) => {
+                        return (
+                            <Subscriber user={follower} subscribe={subscribeOnUser} unsubscribe={unsubscribeFromUser}/>
+                        )
+                    })}
+                </div>
+            </Modal> }
         </>
     );
 };
