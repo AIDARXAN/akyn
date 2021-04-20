@@ -227,7 +227,7 @@ class UserFollowersListView(APIView):
     )
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
-        users = user.followers.all().exclude(pk=request.user.pk)
+        users = user.followers.all()
         serializer = self.serializer(users, context={'request': request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

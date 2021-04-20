@@ -1,8 +1,17 @@
 import {userStatuses} from "./constants";
 import Profile from "./Containers/Profile/Profile";
 import CreatePost from "./Containers/CreatePost/CreatePost";
+import ProfileOfAnotherUser from "./Containers/Profile/ProfileOfAnotherUser";
+import Search from "./Containers/Search/Search";
 
 const routes = [
+    {
+        id: "search_user",
+        path: "/search",
+        name: "Издөө",
+        icon: "nc-icon nc-zoom-split",
+        component: Search
+    },
     {
         id: "profile",
         path: "/profile",
@@ -12,11 +21,11 @@ const routes = [
     }, {
         isVisible: false,
         id: "profile",
-        path: "/profile/:edit",
+        path: "/profile/:username",
         name: "Профиль",
-        icon: "nc-icon nc-single-02",
-        component: Profile,
+        component: ProfileOfAnotherUser ,
     },
+
 
     {
         id: "create_post",

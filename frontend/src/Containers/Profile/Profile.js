@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {editUserAvatar, fetchCurrentUser} from "../../store/acrions/user/actionsCreators";
+import {editUserAvatar, fetchCurrentUser, fetchUser} from "../../store/acrions/user/actionsCreators";
 import Card from "reactstrap/es/Card";
 import CardBody from "reactstrap/es/CardBody";
 import moment from "moment";
@@ -20,7 +20,6 @@ const Profile = () => {
     const user = useSelector(state => state.user.currentUser);
     let followers = useSelector(state => state.follow.followers)
     let follows = useSelector(state => state.follow.following)
-    let {edit} = useParams();
     const [modal, setModal] = useState(false);
     const toggleModal = () => setModal(!modal);
 
@@ -30,11 +29,6 @@ const Profile = () => {
     useEffect(() => {
         dispatch(fetchCurrentUser());
     }, [followers, follows]);
-
-    useEffect(() => {
-        if (edit && !user.registration_date) setModal(!modal);
-    }, [edit]);
-
 
     const submitNewUserAvatarHandler = async e => {
         const user = {...user, avatar: e.target.files[0]};
@@ -165,23 +159,20 @@ const Profile = () => {
                 <UserChangeForms
                     closeModal={toggleModal}
                     userInfo={user}
-                    animate={edit}
                 />
             </Modal>
 
             {followers && <Modal isOpen={followersModal} toggle={toggleFollowersModal} centered={true}>
                 <div style={{maxHeight: "600px", overflow: "auto"}}>
-                    {followers?.map((follower, index) => {
-                        return (
-                            <Subscriber currentUser={user} user={follower} subscribe={subscribeOnUser} unsubscribe={unsubscribeFromUser}/>
-                        )
-                    })}
+                    <SubscriberList users={followers} subscribeOnUser={subscribeOnUser}
+                                    unsubscribeFromUser={unsubscribeFromUser}/>
                 </div>
             </Modal>}
 
             {follows && <Modal isOpen={followingModal} toggle={toggleFollowingModal} centered={true}>
                 <div style={{maxHeight: "600px", overflow: "auto"}}>
-                   <SubscriberList users={follows} subscribeOnUser={subscribeOnUser} unsubscribeFromUser={unsubscribeFromUser}/>
+                    <SubscriberList users={follows} subscribeOnUser={subscribeOnUser}
+                                    unsubscribeFromUser={unsubscribeFromUser}/>
                 </div>
             </Modal>}
         </>
