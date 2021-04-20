@@ -11,6 +11,8 @@ import Post from "../../components/Post/Post";
 import {getFollowers, getFollowing, subscribeReq, unsubscribeReq} from "../../store/acrions/Follow/actionCreators";
 import "../../components/Post/post.css";
 import SubscriberList from "../../components/Subscriber/SubscriberList";
+import {useHistory} from "react-router";
+import NotFound from "../Error/NonFound";
 
 const ProfileOfAnotherUser = () => {
     const dispatch = useDispatch();
@@ -45,7 +47,9 @@ const ProfileOfAnotherUser = () => {
         dispatch(unsubscribeReq(username))
         dispatch(getFollowers(user.username))
     }
-    return !user ? "No data" : (
+
+    const history = useHistory();
+    return !user ? <NotFound/>: (
         <>
             <div className="content">
                 <Card className="card-user" style={{width: "600px"}}>

@@ -4,6 +4,7 @@ import CreatePost from "./Containers/CreatePost/CreatePost";
 import ProfileOfAnotherUser from "./Containers/Profile/ProfileOfAnotherUser";
 import Search from "./Containers/Search/Search";
 import Feed from "./Containers/Feed/Feed";
+import NotFound from "./Containers/Error/NonFound";
 
 const routes = [
     {
@@ -60,6 +61,10 @@ const routes = [
         isVisible: false,
         path: "/reset-password",
         component: null
+    },{
+        isVisible: false,
+        path: "/not-found",
+        component: NotFound
     }
 ];
 
