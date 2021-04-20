@@ -21,3 +21,15 @@ export const CREATE_COMMENT_ERR = "CREATE_COMMENT_ERR";
 
 export const createCommentRes = () => ({type: CREATE_POST_RES});
 export const createCommentErr = (error) => ({type: CREATE_POST_ERR, error});
+
+export const UPDATE_POST_RES = "UPDATE_POST_RES"
+export const UPDATE_POST_ERR = "UPDATE_POST_ERR"
+
+export const updatePostRes = () => ({type: UPDATE_POST_RES})
+export const updatePostErr = (error) => ({type: UPDATE_POST_ERR, error})
+
+export const DELETE_POST_RES = "DELETE_POST_RES"
+export const DELETE_POST_ERR = "DELETE_POST_ERR"
+
+export const deletePostRes = () => ({type: DELETE_POST_RES})
+export const deletePostErr = (error) => ({type: DELETE_POST_ERR, error})

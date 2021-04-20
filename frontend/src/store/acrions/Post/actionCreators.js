@@ -6,11 +6,11 @@ import {PUBLISHED} from "../../../constants";
 import {
     createCommentErr, createCommentRes,
     createPostErr,
-    createPostRes,
+    createPostRes, deletePostErr, deletePostRes,
     likePostDeleteErr,
     likePostDeleteRes,
     likePostErr,
-    likePostRes
+    likePostRes, updatePostErr, updatePostRes
 } from "./actions";
 
 export const createPost = (text) => async (dispatch, getState) => {
@@ -47,5 +47,23 @@ export const createComment = (publicationId, text) => async (dispatch, getState)
         dispatch(createCommentRes())
     } catch (e) {
         dispatch(createCommentErr(e.response.data));
+    }
+};
+
+export const updatePost = (id, text, status) => async (dispatch, getState) => {
+    try {
+        await axiosApi.put(`v1/publications/${id}/`, {description: text, status:status});
+        dispatch(updatePostRes())
+    } catch (e) {
+        dispatch(updatePostErr(e.response.data));
+    }
+};
+
+export const deletePost = (id) => async (dispatch, getState) => {
+    try {
+        await axiosApi.delete(`v1/publications/${id}/`, );
+        dispatch(deletePostRes())
+    } catch (e) {
+        dispatch(deletePostErr(e.response.data));
     }
 };

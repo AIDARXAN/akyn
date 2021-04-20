@@ -4,7 +4,7 @@ import CardBody from "reactstrap/es/CardBody";
 import moment from "moment";
 import "./post.css";
 import {useDispatch, useSelector} from "react-redux";
-import {createComment, likePost, likePostDelete} from "../../store/acrions/Post/actionCreators";
+import {createComment, deletePost, likePost, likePostDelete} from "../../store/acrions/Post/actionCreators";
 import UserChangeForms from "../../Containers/Profile/UserChangeForms";
 import Modal from "reactstrap/es/Modal";
 import CommentCreateForm from "./CommentCreateForm";
@@ -12,6 +12,11 @@ import {openSuccessAlert} from "../../store/acrions/Notification/actionCreators"
 import CommentsListForm from "./CommentsListForm";
 import {fetchComments} from "../../store/acrions/Comments/actionCreators";
 import {NavLink} from "react-router-dom";
+import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
+import {fetchFeed} from "../../store/Feed/actionCreators";
+import {fetchCurrentUser} from "../../store/acrions/user/actionsCreators";
+import PostUpdateModal from "./PostUpdateModal";
+import PostDeleteModal from "./PostDeleteModal";
 
 const Post = ({post}) => {
     const dispatch = useDispatch();
@@ -55,6 +60,16 @@ const Post = ({post}) => {
             toggleCommentModal()
     }
 
+    const [updatePostModal, setUpdatePostModal] = useState(false);
+    const toggleUpdatePost = () => {
+        setUpdatePostModal(!updatePostModal)
+    }
+
+    const [deletePostModal, setDeletePostModal] = useState(false);
+    const toggleDeletePost = () => {
+        setDeletePostModal(!deletePostModal)
+    }
+
     return (
         <>
             <Card style={{width: "600px"}}>
@@ -69,10 +84,20 @@ const Post = ({post}) => {
                         <NavLink to={post.is_owner ? "/profile" : "/profile/" + post?.user.username}
                                  className="col-2 nav-link-font">@{post?.user.username}</NavLink>
                         <div className={"col-4"}>{moment(post?.creation_date).format("DD.MM.YYYY")}</div>
-                        {post.is_owner && <div className="col-1 float-right"><img className="post-more-icon"
-                                                                                  src={require('assets/icons/more.svg')}
-                                                                                  alt=""/></div>}
-                        {/*TODO drop down*/}
+
+                        {post.is_owner && <div className="col-1 float-right"><UncontrolledDropdown>
+                            <DropdownToggle tag="span">
+                                <img className="post-more-icon"
+                                     src={require('assets/icons/more.svg')}
+                                     alt=""/>
+                            </DropdownToggle>
+                            <DropdownMenu right>
+                                <DropdownItem onClick={toggleUpdatePost}>Өзгөртүү</DropdownItem>
+                                <DropdownItem divider/>
+                                <DropdownItem onClick={toggleDeletePost}>Өчүрүү</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                        </div>}
                     </div>
                     <pre className="post-description ml-5 mt-3">
                     {post?.description}
@@ -97,6 +122,8 @@ const Post = ({post}) => {
                                 style={{maxHeight: "80%"}}>
                 <CommentsListForm commentSubmit={commentSubmit} comments={comments} style={{maxHeight: "80%"}}/>
             </Modal>}
+            <PostUpdateModal isOpen={updatePostModal} toggle={toggleUpdatePost} post={post}/>
+            <PostDeleteModal isOpen={deletePostModal} toggle={toggleDeletePost} post={post}/>
         </>
     )
 }

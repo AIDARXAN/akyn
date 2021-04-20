@@ -14,10 +14,11 @@ import {getFollowers, getFollowing, subscribeReq, unsubscribeReq} from "../../st
 import Subscriber from "../../components/Subscriber/Subscriber";
 import "../../components/Post/post.css";
 import SubscriberList from "../../components/Subscriber/SubscriberList";
+import {fetchFeed} from "../../store/Feed/actionCreators";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user.currentUser);
+    let user = useSelector(state => state.user.currentUser);
     let followers = useSelector(state => state.follow.followers)
     let follows = useSelector(state => state.follow.following)
     const [modal, setModal] = useState(false);
@@ -27,8 +28,8 @@ const Profile = () => {
     const toggleTooltip = () => setTooltip(!tooltip);
 
     useEffect(() => {
-        dispatch(fetchCurrentUser());
-    }, [followers, follows]);
+        window.setTimeout(() => {dispatch(fetchCurrentUser())}, 5000)
+    }, [user]);
 
     const submitNewUserAvatarHandler = async e => {
         const user = {...user, avatar: e.target.files[0]};

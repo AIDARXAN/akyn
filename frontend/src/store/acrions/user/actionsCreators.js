@@ -24,6 +24,7 @@ import {
 } from "./actions";
 import axiosApi from "../../../axiosAPI";
 import {getNotifications, openErrorAlert, openSuccessAlert} from "../Notification/actionCreators";
+import {fetchFeed} from "../../Feed/actionCreators";
 
 
 export const userLogin = user => async dispatch => {
@@ -83,7 +84,7 @@ export const fetchCurrentUser = () => async dispatch => {
         const response = await axiosApi.get("v1/users/current/");
 
         dispatch(fetchCurrentUserRes(response.data));
-        dispatch(getNotifications());
+        dispatch(fetchFeed());
     } catch (e) {
         dispatch(fetchCurrentUserErr(e));
     }

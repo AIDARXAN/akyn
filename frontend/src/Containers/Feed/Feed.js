@@ -6,9 +6,9 @@ import {fetchFeed} from "../../store/Feed/actionCreators";
 const Feed = () => {
     const dispatch = useDispatch();
     const feed = useSelector(state => state.feed.feed)
-    useEffect(()=> {
-        dispatch(fetchFeed());
-    }, [])
+    useEffect(() => {
+        window.setTimeout(() => {dispatch(fetchFeed())}, 5000)
+    }, [feed])
     return (
         <div className='content'>
             {feed && feed.map((publication, index) => {
