@@ -13,6 +13,7 @@ import "../../components/Post/post.css";
 import SubscriberList from "../../components/Subscriber/SubscriberList";
 import {useHistory} from "react-router";
 import NotFound from "../Error/NonFound";
+import CommonModal from "../../components/Modals/CommonModal";
 
 const ProfileOfAnotherUser = () => {
     const dispatch = useDispatch();
@@ -106,14 +107,14 @@ const ProfileOfAnotherUser = () => {
                 })}
             </div>
 
-            {followers && <Modal isOpen={followersModal} toggle={toggleFollowersModal} centered={true}>
+            {followers.length !== 0 && <Modal isOpen={followersModal} toggle={toggleFollowersModal} centered={true}>
                 <div style={{maxHeight: "600px", overflow: "auto"}}>
                     <SubscriberList users={followers} subscribeOnUser={subscribeOnUser}
                                     unsubscribeFromUser={unsubscribeFromUser}/>
                 </div>
             </Modal>}
 
-            {follows && <Modal isOpen={followingModal} toggle={toggleFollowingModal} centered={true}>
+            {follows.length !== 0 && <Modal isOpen={followingModal} toggle={toggleFollowingModal} centered={true}>
                 <div style={{maxHeight: "600px", overflow: "auto"}}>
                     <SubscriberList users={follows} subscribeOnUser={subscribeOnUser}
                                     unsubscribeFromUser={unsubscribeFromUser}/>

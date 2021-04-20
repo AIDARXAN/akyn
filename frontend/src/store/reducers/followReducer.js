@@ -3,8 +3,8 @@ import {FETCH_COMMENTS_ERR, FETCH_COMMENTS_RES} from "../acrions/Comments/action
 import {GET_FOLLOWERS_ERR, GET_FOLLOWERS_RES, GET_FOLLOWING_ERR, GET_FOLLOWING_RES} from "../acrions/Follow/actions";
 
 const initialState = {
-    followers: null,
-    following: null,
+    followers: [],
+    following: [],
     followersErr: null,
     followsErr: null,
 };

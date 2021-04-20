@@ -84,7 +84,6 @@ export const fetchCurrentUser = () => async dispatch => {
         const response = await axiosApi.get("v1/users/current/");
 
         dispatch(fetchCurrentUserRes(response.data));
-        dispatch(fetchFeed());
     } catch (e) {
         dispatch(fetchCurrentUserErr(e));
     }

@@ -10,6 +10,7 @@ import {fetchCurrentUser} from "../../store/acrions/user/actionsCreators";
 import ImportantNotificationAlert from "../../components/Alerts/ImportantNotificationAlert";
 import SuccessAlert from "../../components/Alerts/SuccessAlert";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import {fetchFeed} from "../../store/Feed/actionCreators";
 
 const AutUser = (props) => {
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const AutUser = (props) => {
 
     useEffect(() => {
         dispatch(fetchCurrentUser());
+        dispatch(fetchFeed());
     }, []);
     return (
         <div className="wrapper">

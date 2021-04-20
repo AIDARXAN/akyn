@@ -160,58 +160,58 @@ class Header extends React.Component {
                         navbar
                         className='justify-content-end text-center'
                     >
-                        <Nav navbar className='ml-auto'>
-                            <Dropdown
-                                nav
-                                isOpen={this.state.dropdownOpen}
-                                toggle={(e) => this.dropdownToggle(e)}
-                                id="bell"
-                            >
-                                <DropdownToggle caret nav id="notificationsList">
-                                    <span style={{
-                                        background: "#f5725a",
-                                        padding: " 1px 4px",
-                                        color: "white",
-                                        fontWeight: "bold",
-                                        fontSize: "15px",
-                                        borderRadius: "3px"
-                                    }}>{this.props.notifications && this.props.notifications.length}</span>
-                                    <i className='nc-icon nc-bell-55'/>
-                                </DropdownToggle>
+                        {/*<Nav navbar className='ml-auto'>*/}
+                        {/*    <Dropdown*/}
+                        {/*        nav*/}
+                        {/*        isOpen={this.state.dropdownOpen}*/}
+                        {/*        toggle={(e) => this.dropdownToggle(e)}*/}
+                        {/*        id="bell"*/}
+                        {/*    >*/}
+                        {/*        <DropdownToggle caret nav id="notificationsList">*/}
+                        {/*            <span style={{*/}
+                        {/*                background: "#f5725a",*/}
+                        {/*                padding: " 1px 4px",*/}
+                        {/*                color: "white",*/}
+                        {/*                fontWeight: "bold",*/}
+                        {/*                fontSize: "15px",*/}
+                        {/*                borderRadius: "3px"*/}
+                        {/*            }}>{this.props.notifications && this.props.notifications.length}</span>*/}
+                        {/*            <i className='nc-icon nc-bell-55'/>*/}
+                        {/*        </DropdownToggle>*/}
 
-                                <DropdownMenu right className='overflow-hidden'>
-                                    <div style={{minWidth: "300px"}}>
-                                        {this.props.notifications && this.props.notifications[0] ? this.props.notifications.map((e, id) => (
-                                            <div key={id} style={{
-                                                fontSize: "14px",
-                                                position: "relative",
-                                                padding: "15px 15px 15px 30px",
-                                                background: e.notification.name === REGISTERED_NOTIFICATION && "#ef8157",
-                                                display: "flex"
-                                            }}>
-                                                <i
-                                                    style={{
-                                                        transform: "scale(1.2)",
-                                                        position: "absolute",
-                                                        left: "10px",
-                                                        top: "15px"
-                                                    }}
-                                                    className={`nc-icon nc-alert-circle-i text-${e.notification.name === REGISTERED_NOTIFICATION ? "light" : "success"} pr-2`}
-                                                />
-                                                {e.notification.name === REGISTERED_NOTIFICATION &&
-                                                <RegistrationNotification
-                                                    firstName={e.notification.user.first_name}
-                                                    lastName={e.notification.user.last_name}
-                                                    id={e.notification.user.id}
-                                                />
-                                                }
-                                            </div>
-                                        )) : <p id="not-notification" className='p-2'>Билдирүү жок</p>}
+                        {/*        <DropdownMenu right className='overflow-hidden'>*/}
+                        {/*            <div style={{minWidth: "300px"}}>*/}
+                        {/*                {this.props.notifications && this.props.notifications[0] ? this.props.notifications.map((e, id) => (*/}
+                        {/*                    <div key={id} style={{*/}
+                        {/*                        fontSize: "14px",*/}
+                        {/*                        position: "relative",*/}
+                        {/*                        padding: "15px 15px 15px 30px",*/}
+                        {/*                        background: e.notification.name === REGISTERED_NOTIFICATION && "#ef8157",*/}
+                        {/*                        display: "flex"*/}
+                        {/*                    }}>*/}
+                        {/*                        <i*/}
+                        {/*                            style={{*/}
+                        {/*                                transform: "scale(1.2)",*/}
+                        {/*                                position: "absolute",*/}
+                        {/*                                left: "10px",*/}
+                        {/*                                top: "15px"*/}
+                        {/*                            }}*/}
+                        {/*                            className={`nc-icon nc-alert-circle-i text-${e.notification.name === REGISTERED_NOTIFICATION ? "light" : "success"} pr-2`}*/}
+                        {/*                        />*/}
+                        {/*                        {e.notification.name === REGISTERED_NOTIFICATION &&*/}
+                        {/*                        <RegistrationNotification*/}
+                        {/*                            firstName={e.notification.user.first_name}*/}
+                        {/*                            lastName={e.notification.user.last_name}*/}
+                        {/*                            id={e.notification.user.id}*/}
+                        {/*                        />*/}
+                        {/*                        }*/}
+                        {/*                    </div>*/}
+                        {/*                )) : <p id="not-notification" className='p-2'>Билдирүү жок</p>}*/}
 
-                                    </div>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </Nav>
+                        {/*            </div>*/}
+                        {/*        </DropdownMenu>*/}
+                        {/*    </Dropdown>*/}
+                        {/*</Nav>*/}
                         {this.props.user && <Nav className="ml-2">
                             <Dropdown
                                 nav

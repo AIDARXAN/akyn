@@ -27,17 +27,25 @@ const Post = ({post}) => {
 
     let comments = useSelector(state => state.publicationComments.comments)
 
+
     const [commentsListModal, setCommentsListModal] = useState(false);
     const toggleCommentsListModal = () => {
-        if (postComments > 0) {
+        if (post.comments > 0) {
             dispatch(fetchComments(post.id))
             setCommentsListModal(!commentsListModal);
         }
     }
 
+    useEffect(() => {
+        if (commentsListModal) {
+            window.setTimeout(() => {
+                dispatch(fetchComments(post.id))
+            }, 3000)
+        }
+    }, [comments])
+
     const [postIsLiked, setPostIsLiked] = useState(post.is_liked);
     const [postLikes, setPostLikes] = useState(post.likes);
-    const [postComments, setPostComments] = useState(post.comments)
 
     const postLike = (id) => {
         if (post.id === id) {
@@ -55,7 +63,6 @@ const Post = ({post}) => {
     const commentSubmit = (text, list) => {
         dispatch(createComment(post.id, text))
         dispatch(fetchComments(post.id))
-        setPostComments(postComments + 1)
         if (list !== true)
             toggleCommentModal()
     }
@@ -110,7 +117,7 @@ const Post = ({post}) => {
                         <i className="nc-icon nc-chat-33 ml-4 post-cursor-pointer" style={{fontSize: "25px"}}
                            onClick={toggleCommentModal}/>
                         <a className="post-like-comment ml-2 post-cursor-pointer"
-                           onClick={toggleCommentsListModal}>{postComments}</a>
+                           onClick={toggleCommentsListModal}>{post.comments}</a>
                     </div>
 
                 </CardBody>
