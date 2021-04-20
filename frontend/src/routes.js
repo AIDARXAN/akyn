@@ -3,8 +3,16 @@ import Profile from "./Containers/Profile/Profile";
 import CreatePost from "./Containers/CreatePost/CreatePost";
 import ProfileOfAnotherUser from "./Containers/Profile/ProfileOfAnotherUser";
 import Search from "./Containers/Search/Search";
+import Feed from "./Containers/Feed/Feed";
 
 const routes = [
+    {
+        id: "feed",
+        path: "/feed",
+        name: "Лента",
+        icon: "nc-icon nc-send",
+        component: Feed
+    },
     {
         id: "search_user",
         path: "/search",

@@ -329,7 +329,7 @@ class FeedView(APIView):
         responses={status.HTTP_200_OK: success_response_ok(serializer)}
     )
     def get(self, request):
-        follows = Follow.objects.filter(subscriber__pk=request.user.pk).values_list('user__pk', flat=True)
+        follows = Follow.objects.filter(Q(subscriber__pk=request.user.pk) | Q(user__pk=request.user.pk)).values_list('user__pk', flat=True)
         publications = Publication.objects.filter(user__pk__in=follows, status=PUBLISHED)
         serializer = self.serializer(publications, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
