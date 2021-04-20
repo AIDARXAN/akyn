@@ -123,3 +123,10 @@ export const DELETE_USER_ACCOUNT_ERR = "DELETE_USER_ACCOUNT_ERR";
 
 export const deleteUserAccountRes = () => ({type: DELETE_USER_ACCOUNT_RES})
 export const deleteUserAccountErr = (error) => ({type: DELETE_USER_ACCOUNT_ERR, error})
+
+export const FETCH_USER_RES = "FETCH_USER_RES";
+export const FETCH_USER_ERR = "FETCH_USER_ERR";
+
+export const fetchUserRes = (data) => ({type: FETCH_USER_RES, data});
+export const fetchUserErr = (error) => ({type: FETCH_USER_ERR, error});
+

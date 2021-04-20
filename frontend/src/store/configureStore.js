@@ -10,6 +10,7 @@ import passwordResetConfirmReducer from "./reducers/passwordResetConfirmReducer"
 import notificationReducer from "./reducers/notificationReducer";
 import commentsReducer from "./reducers/commentsReducer";
 import followReducer from "./reducers/followReducer";
+import searchReducer from "./reducers/searchReducer";
 
 
 export const history = createBrowserHistory();
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     passwordResetConfirm: passwordResetConfirmReducer,
     publicationComments: commentsReducer,
     follow: followReducer,
+    search: searchReducer
 });
 
 const middleware = [

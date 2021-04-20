@@ -4,7 +4,7 @@ import {
     EDIT_USER_PROFILE_PASSWORD_ERR,
     EDIT_USER_PROFILE_PASSWORD_RES,
     FETCH_CURRENT_USER_ERR,
-    FETCH_CURRENT_USER_RES,
+    FETCH_CURRENT_USER_RES, FETCH_USER_ERR, FETCH_USER_RES,
     FETCH_USERS_FAIL,
     FETCH_USERS_REQUEST,
     FETCH_USERS_SUCCESS,
@@ -28,7 +28,9 @@ const initialState = {
     currentUser: null,
     editProfileError: null,
     editUserProfilePasswordError: null,
-    editUserRole: null
+    editUserRole: null,
+    anotherUser: null,
+    fetchAnotherUserErr: null,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -72,6 +74,11 @@ const userReducer = (state = initialState, action) => {
             return {...state, editUserProfilePasswordError: null};
         case EDIT_USER_PROFILE_PASSWORD_ERR:
             return {...state, editUserProfilePasswordError: action.error};
+
+        case FETCH_USER_RES:
+            return {...state, anotherUser: action.data, fetchAnotherUserErr: null}
+        case FETCH_USER_ERR:
+            return {...state, fetchAnotherUserErr: action.error}
 
         default:
             return state;

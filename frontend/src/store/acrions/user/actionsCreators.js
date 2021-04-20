@@ -12,7 +12,7 @@ import {
     editUserProfilePasswordErr,
     editUserProfilePasswordRes,
     fetchCurrentUserErr,
-    fetchCurrentUserRes,
+    fetchCurrentUserRes, fetchUserErr, fetchUserRes,
     userDeletionErr,
     userDeletionRes,
     userLoginErr,
@@ -151,5 +151,14 @@ export const deleteUser = () => async (dispatch, getState) => {
         dispatch(deleteUserAccountRes());
     } catch (e) {
         dispatch(deleteUserAccountErr(e?.response?.data))
+    }
+};
+
+export const fetchUser = (username) => async (dispatch, getState) => {
+    try {
+        const response = await axiosApi.get(`v1/users/${username}/`);
+        dispatch(fetchUserRes(response.data));
+    } catch (e) {
+        dispatch(fetchUserErr(e?.response?.data))
     }
 };
