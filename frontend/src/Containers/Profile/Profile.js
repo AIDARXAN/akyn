@@ -10,14 +10,16 @@ import UserChangeForms from "./UserChangeForms";
 import Tooltip from "reactstrap/es/Tooltip";
 import {useParams} from "react-router-dom";
 import Post from "../../components/Post/Post";
-import {getFollowers, getFollowing} from "../../store/acrions/Follow/actionCreators";
+import {getFollowers, getFollowing, subscribeReq, unsubscribeReq} from "../../store/acrions/Follow/actionCreators";
 import Subscriber from "../../components/Subscriber/Subscriber";
 import "../../components/Post/post.css";
-import {subscribe, unsubscribe} from "../../components/Subscriber/subscribe";
+import SubscriberList from "../../components/Subscriber/SubscriberList";
 
 const Profile = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.currentUser);
+    let followers = useSelector(state => state.follow.followers)
+    let follows = useSelector(state => state.follow.following)
     let {edit} = useParams();
     const [modal, setModal] = useState(false);
     const toggleModal = () => setModal(!modal);
@@ -27,7 +29,7 @@ const Profile = () => {
 
     useEffect(() => {
         dispatch(fetchCurrentUser());
-    }, []);
+    }, [followers, follows]);
 
     useEffect(() => {
         if (edit && !user.registration_date) setModal(!modal);
@@ -47,8 +49,7 @@ const Profile = () => {
         await dispatch(editUserAvatar(data));
     };
 
-    let followers = useSelector(state => state.follow.followers)
-    let follows = useSelector(state => state.follow.following)
+
     const [followersModal, setFollowersModal] = useState(false);
     const toggleFollowersModal = () => {
         dispatch(getFollowers(user.username))
@@ -62,13 +63,13 @@ const Profile = () => {
     }
 
     const subscribeOnUser = (username) => {
-        subscribe(username)
+        dispatch(subscribeReq(username))
         dispatch(getFollowing(user.username))
         dispatch(getFollowers(user.username))
     }
 
     const unsubscribeFromUser = (username) => {
-        unsubscribe(username)
+        dispatch(unsubscribeReq(username))
         dispatch(getFollowing(user.username))
         dispatch(getFollowers(user.username))
     }
@@ -78,8 +79,8 @@ const Profile = () => {
                 <Card className="card-user" style={{width: "600px"}}>
 
                     <CardBody>
-                    <div className="author row">
-                        <div className={'profile-avatar col-3'}>
+                        <div className="author row">
+                            <div className={'profile-avatar col-3'}>
                                     <span className="position-relative">
                                         <img
                                             alt="..."
@@ -120,29 +121,31 @@ const Profile = () => {
 
                                     </div>
                                     </span>
-                        </div>
+                            </div>
 
-                        <div className="profile-text col-7">
-                            <h5 className="title d-inline-block">{user.first_name} {user.last_name}</h5>
+                            <div className="profile-text col-7">
+                                <h5 className="title d-inline-block">{user.first_name} {user.last_name}</h5>
 
-                            <div className="row font-weight-bold">
-                                <p className="m-auto post-cursor-pointer" onClick={toggleFollowersModal}>Жазычуулары: {user.followers}</p>
-                                <p className="m-auto post-cursor-pointer" onClick={toggleFollowingModal}>Жазылган: {user.follows}</p>
+                                <div className="row font-weight-bold">
+                                    <p className="m-auto post-cursor-pointer"
+                                       onClick={toggleFollowersModal}>Жазычуулары: {user.followers}</p>
+                                    <p className="m-auto post-cursor-pointer"
+                                       onClick={toggleFollowingModal}>Жазылган: {user.follows}</p>
+                                </div>
+                            </div>
+                            <div
+                                className="profile-edit-icon col-2"
+                                id="edit-profile-btn"
+                                onClick={toggleModal}
+                            >
+                                <i className="nc-icon nc-settings-gear-65"/>
                             </div>
                         </div>
-                        <div
-                            className="profile-edit-icon col-2"
-                            id="edit-profile-btn"
-                            onClick={toggleModal}
-                        >
-                            <i className="nc-icon nc-settings-gear-65"/>
-                        </div>
-                    </div>
 
-                    <div className="">
-                        <p className="description font-weight-bold">Логин: @{user.username}</p>
-                        <p className="description font-weight-bold">Э-почта: {user.email}</p>
-                        <p className="description font-weight-bold">Катталды: {moment(user.registration_date).format("DD.MM.YYYY")}</p>
+                        <div className="">
+                            <p className="description font-weight-bold">Логин: @{user.username}</p>
+                            <p className="description font-weight-bold">Э-почта: {user.email}</p>
+                            <p className="description font-weight-bold">Катталды: {moment(user.registration_date).format("DD.MM.YYYY")}</p>
                         </div>
                     </CardBody>
                 </Card>
@@ -170,21 +173,17 @@ const Profile = () => {
                 <div style={{maxHeight: "600px", overflow: "auto"}}>
                     {followers?.map((follower, index) => {
                         return (
-                            <Subscriber user={follower} subscribe={subscribeOnUser} unsubscribe={unsubscribeFromUser}/>
+                            <Subscriber currentUser={user} user={follower} subscribe={subscribeOnUser} unsubscribe={unsubscribeFromUser}/>
                         )
                     })}
                 </div>
-            </Modal> }
+            </Modal>}
 
             {follows && <Modal isOpen={followingModal} toggle={toggleFollowingModal} centered={true}>
                 <div style={{maxHeight: "600px", overflow: "auto"}}>
-                    {follows?.map((follower, index) => {
-                        return (
-                            <Subscriber user={follower} subscribe={subscribeOnUser} unsubscribe={unsubscribeFromUser}/>
-                        )
-                    })}
+                   <SubscriberList users={follows} subscribeOnUser={subscribeOnUser} unsubscribeFromUser={unsubscribeFromUser}/>
                 </div>
-            </Modal> }
+            </Modal>}
         </>
     );
 };
