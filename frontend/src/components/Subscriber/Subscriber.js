@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 const Subscriber = ({user, subscribe, unsubscribe}) => {
+    useEffect(() => {}, [user])
     return (
         <div className="row w-100">
             <img
@@ -12,7 +13,7 @@ const Subscriber = ({user, subscribe, unsubscribe}) => {
             <p className="ml-1 mt-2 col-4">{user.first_name} {user.last_name}</p>
             <p className="ml-1 mt-3 col-1">@{user.username}</p>
             <div className="col-4">
-                {user.is_subscribed ? <button className="btn btn-outline-primary btn-round ml-5" onClick={() => {unsubscribe(user.username)}}>
+                {user?.is_subscribed ? <button className="btn btn-outline-primary btn-round ml-5" onClick={() => {unsubscribe(user.username)}}>
                 Жазылдыңыз
             </button> : <button className="btn btn-primary btn-round ml-5" onClick={() => subscribe(user.username)}>
                 Жазылуу
