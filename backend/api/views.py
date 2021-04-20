@@ -213,7 +213,8 @@ class UserSubscribeView(APIView):
     )
     def delete(self, request, username):
         user = get_object_or_404(User, username=username)
-        user.followers.remove(request.user)
+        follow = get_object_or_404(Follow, user=user, subscriber=request.user)
+        follow.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
