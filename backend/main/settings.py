@@ -44,9 +44,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    # 3-rd party libraries
+    'drf_yasg',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth.registration',
+
+    # apps
+    'api',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,32 +92,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
-
+SITE_ID=1
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-USER = os.environ.get('MYSQL_USER')
-HOST = os.environ.get('MYSQL_HOST')
-PASSWORD = os.environ.get('MYSQL_PASSWORD')
-DATABASE_NAME = os.environ.get('MYSQL_DATABASE')
-PORT = os.environ.get('MYSQL_PORT')
+USER = os.environ.get('POSTGRES_USER')
+HOST = os.environ.get('POSTGRES_HOST')
+PASSWORD = os.environ.get('POSTGRES_PASSWORD')
+DATABASE_NAME = os.environ.get('POSTGRES_DB')
+PORT = os.environ.get('POSTGRES_PORT')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': DATABASE_NAME,
         'USER': USER,
         'PASSWORD': PASSWORD,
         'HOST': HOST,
-        'PORT': PORT,
-        'NAME': DATABASE_NAME,
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        }
+        'PORT': '5432',
     }
 }
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -111,6 +124,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 5,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -126,7 +142,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bishkek'
 
 USE_I18N = True
 
@@ -139,3 +155,48 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'NON_FIELD_ERRORS_KEY': 'common_error'
+}
+
+AUTH_USER_MODEL = 'api.User'
+
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'api.serializers.CustomLoginSerializer',
+    'REGISTER_SERIALIZER': 'api.serializers.RegisterSerializer',
+    'TOKEN_SERIALIZER': 'api.serializers.TokenSerializer',
+    'PASSWORD_RESET_CONFIRM_SERIALIZER': 'api.serializers.PasswordResetConfirmSerializer',
+}
+
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_ADAPTER = 'api.adapters.CustomUserAccountAdapter'
+
+# Email settings
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL')
+SENDER_PASSWORD = os.environ.get('SENDER_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = SENDER_EMAIL
+EMAIL_HOST_PASSWORD = SENDER_PASSWORD
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Here you write url of the client password reset
+ROOT_DOMAIN = os.environ.get('ROOT_DOMAIN')
+PASSWORD_RESET_URI = os.environ.get('PASSWORD_RESET_URI', 'api/v1/users/password/reset/confirm/')
+
+TEN_MEGABYTES_IN_BYTES = 10000000
+IMAGE_CONTENT_TYPES = ['image/gif', 'image/jpeg', 'image/png']

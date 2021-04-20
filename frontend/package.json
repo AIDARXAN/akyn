@@ -1,0 +1,74 @@
+{
+  "name": "paper-dashboard-react",
+  "version": "1.2.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "axios": "^0.20.0",
+    "bootstrap": "4.5.0",
+    "chart.js": "2.9.3",
+    "classnames": "^2.2.6",
+    "connected-react-router": "^6.8.0",
+    "date-fns": "^2.16.1",
+    "dateformat": "^3.0.3",
+    "history": "4.10.1",
+    "moment": "^2.29.0",
+    "node-sass": "4.14.1",
+    "perfect-scrollbar": "1.5.0",
+    "prop-types": "^15.7.2",
+    "react": "16.13.1",
+    "react-chartjs-2": "2.9.0",
+    "react-datepicker": "^3.3.0",
+    "react-dom": "16.13.1",
+    "react-google-maps": "9.4.5",
+    "react-input-mask": "^2.0.4",
+    "react-notification-alert": "0.0.12",
+    "react-redux": "^7.2.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "3.4.1",
+    "react-select": "^3.1.1",
+    "react-text-mask": "^5.4.3",
+    "react-to-print": "^2.11.0",
+    "reactstrap": "8.4.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:local_test": "BROWSER=none react-scripts start",
+    "start:test": "BROWSER=none REACT_APP_ENV=tests react-scripts start",
+    "build-demo": "REACT_APP_ENV=demo react-scripts build",
+    "build-prod": "REACT_APP_ENV=production react-scripts build",
+    "build-stage": "REACT_APP_ENV=staging react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "compile-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.css",
+    "minify-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.min.css --output-style compressed",
+    "map-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.css --source-map true"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "optionalDependencies": {
+    "@types/googlemaps": "3.39.6",
+    "@types/markerclustererplus": "2.1.33",
+    "@types/react": "16.9.35",
+    "ajv": "6.12.2",
+    "jquery": "3.5.1",
+    "typescript": "3.9.5"
+  },
+  "devDependencies": {
+    "gulp": "4.0.2",
+    "gulp-append-prepend": "1.0.8"
+  }
+}

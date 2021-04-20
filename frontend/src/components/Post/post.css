@@ -1,0 +1,31 @@
+.post-like {
+    width: 25px;
+    height: 25px;
+}
+
+.post-like-number{
+    font-size: 16px;
+}
+
+.post-like-comment {
+    font-size: 16px;
+    text-decoration: black;
+}
+
+.post-description {
+    font-size: 16px;
+    font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+}
+
+.post-cursor-pointer {
+    cursor: pointer;
+}
+
+.post-more-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.nav-link-font {
+    color: black;
+}
