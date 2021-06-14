@@ -14,7 +14,6 @@ const PostDeleteModal = ({isOpen, toggle, post, setComments, comments}) => {
     const submitDeletePost = () => {
         dispatch(deletePost(post.id))
         toggle()
-        setComments(comments--)
     }
 
     return (

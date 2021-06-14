@@ -36,21 +36,25 @@ In activated virtualenv install requirements:
 pip install -r requirements.txt
 ```
 
-Create new database in mysql and provide its credentials as environment variables
-```angular2html
-> CREATE DATABASE DATABASE_NAME CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-Create .env file in the project root directory similar to env_test.txt 
-but fill your own data configurations which you created on your local machine
-```
-MYSQL_ROOT_PASSWORD
-MYSQL_DATABASE
-MYSQL_USER
-MYSQL_PASSWORD
-MYSQL_HOST
-MYSQL_PORT
-```
+# Настройка базы данных
 
+Для создания базы данных нужно ввести следующие команды
+
+`sudo su - postgres` заходим за root пользователя
+
+`psql` открываем postgresql консоль
+
+`CREATE DATABASE myproject;` создаем базу данных
+
+`CREATE USER myprojectuser WITH PASSWORD 'password';` создаем пользователя
+
+`GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;` даем все разрешения новому пользователю к созданной базе
+
+# Связь приложения и базы
+
+Создайте файл ".env" в папке "./backend", в нем будут определены все переменные которые нужны для связи базы данных и Django приложения
+
+В файле укажите данные созданной ранее базы и пользователя посмотрев пример в файле "backend/.env.local.sample"
 Generate secret key using online password generators and put it in the .env file
 ```
 SECRET_KEY=your_generated_secret_key_goes_there
